@@ -13,13 +13,14 @@ function formatCurrentDate() {
 }
 
 // Establecer la fecha actual en el encabezado
-document.getElementById('current-date').textContent = formatCurrentDate();
-
-// Establecer el año actual en el footer
-document.getElementById('current-year').textContent = new Date().getFullYear();
-
-// Manejador de tabs
 document.addEventListener('DOMContentLoaded', function() {
+    // Mostrar fecha actual
+    document.getElementById('current-date').textContent = formatCurrentDate();
+    
+    // Establecer el año actual en el footer
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+    
+    // Manejador de tabs
     const tabButtons = document.querySelectorAll('.tab-btn');
     
     tabButtons.forEach(button => {
@@ -36,24 +37,41 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById(tabId).classList.add('active');
         });
     });
-});
-
-// Manejador del formulario de encuesta
-document.getElementById('poll-form').addEventListener('submit', function(e) {
-    e.preventDefault();
     
-    const selectedOption = document.querySelector('input[name="poll"]:checked');
-    
-    if (selectedOption) {
-        // Aquí se podría enviar la respuesta a un servidor
-        alert(`¡Gracias por tu voto! Has elegido: ${selectedOption.nextElementSibling.textContent}`);
-        
-        // Desactivar el formulario después de votar
-        document.querySelectorAll('input[name="poll"]').forEach(input => {
-            input.disabled = true;
+    // Manejador del formulario de encuesta
+    const pollForm = document.getElementById('poll-form');
+    if (pollForm) {
+        pollForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const selectedOption = document.querySelector('input[name="poll"]:checked');
+            
+            if (selectedOption) {
+                // Aquí se podría enviar la respuesta a un servidor
+                alert(`¡Gracias por tu voto! Has elegido: ${selectedOption.nextElementSibling.textContent}`);
+                
+                // Desactivar el formulario después de votar
+                document.querySelectorAll('input[name="poll"]').forEach(input => {
+                    input.disabled = true;
+                });
+                document.querySelector('#poll-form button').disabled = true;
+                document.querySelector('#poll-form button').textContent = '¡Gracias por votar!';
+            } else {
+                alert('Por favor, selecciona una opción antes de votar.');
+            }
         });
-        document.querySelector('#poll-form button').disabled = true;
-    } else {
-        alert('Por favor, selecciona una opción antes de votar.');
     }
+    
+    // Efecto de hover para artículos
+    const articlePreviews = document.querySelectorAll('.article-preview');
+    articlePreviews.forEach(article => {
+        article.addEventListener('mouseenter', function() {
+            this.style.transition = 'transform 0.3s';
+            this.style.transform = 'translateY(-5px)';
+        });
+        
+        article.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
 });
