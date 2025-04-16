@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Depuración - El Informador Escolar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #0f0094;
+            border-bottom: 2px solid #0f0094;
+            padding-bottom: 10px;
+        }
+        .action-btn {
+            background-color: #0f0094;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .action-btn:hover {
+            background-color: #0a0064;
+        }
+        .info-box {
+            background-color: #f0f0f0;
+            border-left: 4px solid #0f0094;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        #storage-info {
+            white-space: pre-wrap;
+            font-family: monospace;
+            background-color: #f8f8f8;
+            padding: 15px;
+            border: 1px solid #ddd;
+            max-height: 300px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Herramienta de Depuración</h1>
+    
+    <div class="info-box">
+        <p>Esta página te ayudará a solucionar problemas con el sistema de autenticación.</p>
+        <p>Si tienes problemas para acceder a las páginas de login o registro, usa los botones a continuación para limpiar el almacenamiento local.</p>
+    </div>
+    
+    <h2>Acciones de Depuración</h2>
+    
+    <button class="action-btn" id="clear-session">Limpiar Sesión Actual</button>
+    <button class="action-btn" id="clear-all">Limpiar Todo el Almacenamiento</button>
+    <button class="action-btn" id="allow-auth">Permitir Páginas de Autenticación</button>
+    <button class="action-btn" id="refresh-info">Actualizar Información</button>
+    
+    <h2>Estado Actual del Almacenamiento</h2>
+    
+    <div id="storage-info">Cargando información...</div>
+    
+    <script>
+        // Función para mostrar el estado actual del almacenamiento
+        function updateStorageInfo() {
+            const storageInfo = document.getElementById('storage-info');
+            let infoText = "=== LOCAL STORAGE ===\n";
+            
+            // Mostrar localStorage
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                let value = localStorage.getItem(key);
+                
+                // Intentar formatear JSON si es posible
+                try {
+                    const parsed = JSON.parse(value);
+                    value = JSON.stringify(parsed, null, 2);
+                } catch (e) {
+                    // No es JSON, mantener como string
+                }
+                
+                infoText += `${key}: ${value}\n\n`;
+            }
+            
+            infoText += "\n=== SESSION STORAGE ===\n";
+            
+            // Mostrar sessionStorage
+            for (let i = 0; i < sessionStorage.length; i++) {
+                const key = sessionStorage.key(i);
+                let value = sessionStorage.getItem(key);
+                
+                // Intentar formatear JSON si es posible
+                try {
+                    const parsed = JSON.parse(value);
+                    value = JSON.stringify(parsed, null, 2);
+                } catch (e) {
+                    // No es JSON, mantener como string
+                }
+                
+                infoText += `${key}: ${value}\n\n`;
+            }
+            
+            storageInfo.textContent = infoText;
+        }
+        
+        // Configurar botones
+        document.getElementById('clear-session').addEventListener('click', function() {
+            localStorage.removeItem('currentUser');
+            sessionStorage.removeItem('currentUser');
+            alert('Sesión actual limpiada correctamente');
+            updateStorageInfo();
+        });
+        
+        document.getElementById('clear-all').addEventListener('click', function() {
+            localStorage.clear();
+            sessionStorage.clear();
+            alert('Todo el almacenamiento ha sido limpiado');
+            updateStorageInfo();
+        });
+        
+        document.getElementById('allow-auth').addEventListener('click', function() {
+            sessionStorage.setItem('allowAuthPages', 'true');
+            alert('Ahora se permitirá el acceso a las páginas de autenticación');
+            updateStorageInfo();
+        });
+        
+        document.getElementById('refresh-info').addEventListener('click', function() {
+            updateStorageInfo();
+        });
+        
+        // Actualizar información al cargar la página
+        updateStorageInfo();
+    </script>
+    
+    <div class="info-box">
+        <h3>Instrucciones para solucionar el problema:</h3>
+        <ol>
+            <li>Haz clic en "Limpiar Todo el Almacenamiento" para eliminar cualquier dato residual.</li>
+            <li>Haz clic en "Permitir Páginas de Autenticación" para establecer la bandera que permite acceder a login/registro.</li>
+            <li>Ahora intenta acceder a la página de login o registro.</li>
+            <li>Si el problema persiste, vuelve a esta página y verifica el estado del almacenamiento.</li>
+        </ol>
+        <p>Una vez que hayas iniciado sesión correctamente, puedes volver a la <a href="index.html">página principal</a>.</p>
+    </div>
+</body>
+</html>

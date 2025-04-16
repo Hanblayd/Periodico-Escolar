@@ -8,6 +8,7 @@
     <!-- Fuentes de Google -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="user-profile.css">
 </head>
 <body>
     <header class="header">
@@ -23,7 +24,13 @@
                             <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                             <input type="search" placeholder="Buscar..." class="search-input">
                         </div>
-                        <button class="btn-outline">Inicio de sesión</button>
+                        <a href="login.html" class="auth-link"><button class="btn-outline">Inicio de sesión</button></a>
+                        <a href="registro.html" class="auth-link"><button class="btn">Registrarse</button></a>
+                        <div class="user-profile-container" style="display: none;">
+                            <div class="user-avatar">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -50,8 +57,7 @@
             <nav class="main-nav">
                 <ul>
                     <li><a href="index.html" class="active">INICIO</a></li>
-                    <li><a href="#">FORMACIÓN LABORAL</a></li>
-                    <li><a href="#">NOTICIAS</a></li>
+                    <li><a href="noticias.html">NOTICIAS</a></li>
                     <li><a href="#">EVENTOS</a></li>
                     <li><a href="#">DEPORTES</a></li>
                     <li><a href="#">CULTURA</a></li>
@@ -70,15 +76,15 @@
                 <!-- Noticia principal -->
                 <div class="featured-news">
                     <div class="featured-image">
-                        <img src="imagenes/campamento principal.jpg" alt="Imagen de la noticia principal">
+                        <img src="imagenes deportes/foto en blanco todos.jpg" alt="Imagen de la noticia principal">
                     </div>
                     <span class="tag">DESTACADO</span>
-                    <h2>Campamento de 6to</h2>
-                    <p class="excerpt">Los estudiantes tuvieron su espacio para recrearse durante 3 días.</p>
+                    <h2>Nuestra Foto en Blanco</h2>
+                    <p class="excerpt">Los estudiantes se vistieron de blanco para capturar un recuerdo inolvidable.</p>
                     <div class="article-meta">
                         <span>Por Steicy Gonzalez</span>
                         <span>•</span>
-                        <span>15 de marzo, 2025</span>
+                        <span>25 de marzo, 2025</span>
                     </div>
                 </div>
 
@@ -93,16 +99,18 @@
                     <div class="tab-content active" id="recientes">
                         <article class="article-preview">
                             <div class="article-image">
-                                <img src="imagenes/jose luis.jpeg" alt="Nueva biblioteca digital">
+                                <img src="imagenes deportes/yo y yohan.jpg" alt="Nueva biblioteca digital">
                             </div>
                             <div class="article-details">
                                 <span class="tag">TECNOLOGÍA</span>
-                                <h3>Nueva biblioteca disponible para todos los estudiantes</h3>
-                                <p>La plataforma ofrece acceso a más de 300 libros y recursos educativos.</p>
+                                <h3>Dos cerebros, mil líneas de código y una sola misión: ¡terminar antes de la entrega!
+
+                                </h3>
+                                <p>Nos encargamos del diseño y la programación del sitio. Muchas pruebas, algo de caos, y mucho aprendizaje..</p>
                                 <div class="article-meta">
-                                    <span>Por Steicy Gonzalez</span>
+                                    <span>Por Adelaida Pineda</span>
                                     <span>•</span>
-                                    <span>12 de marzo, 2025</span>
+                                    <span>12 de Abril, 2025</span>
                                 </div>
                             </div>
                         </article>
@@ -195,102 +203,110 @@
 
                 <!-- Artículos en columnas -->
                 <div class="columns-section">
-                    <div class="column">
-                        <h3 class="section-title">DEPORTES</h3>
-                        <div class="small-articles">
-                            <article class="small-article">
-                                <div class="small-image">
-                                    <img src="imagenes deportes/pinguilo.jpg" alt="foto pinguilo">
-                                </div>
-                                <div>
-                                    <h4>Joel Isidro "Pinguilo" gana medalla de Oro en el torneo de Baloncesto Escolar de Cristo rey</h4>
-                                    <p>31 de Enero, 2024</p>
-                                </div>
-                            </article>
-                            <article class="small-article">
-                                <div class="small-image">
-                                    <img src="imagenes deportes/alan dunk.png" alt="Cancha de baloncesto">
-                                </div>
-                                <div>
-                                    <h4>Alan3 Luciano machacando el Aro con autoridad</h4>
-                                    <p>13 de marzo, 2024</p>
-                                </div>
-                            </article>
-                            <article class="small-article">
-                                <div class="small-image">
-                                    <img src="imagenes deportes/alandunk2.png" alt="Entrenador de natación">
-                                </div>
-                                <div>
-                                    <h4>Alan Luciano da espectacular show de dunks con su increible atletisismo</h4>
-                                    <p>11 de marzo, 2025</p>
-                                </div>
-                            </article>
+                    <div class="columns-row">
+                        <div class="column">
+                            <h3 class="section-title">RISAS</h3>
+                            <div class="small-articles">
+                                <article class="small-article">
+                                    <div class="small-image">
+                                        <img src="imagenes deportes/eliezer lentes.jpg" alt="eliezer lentes">
+                                    </div>
+                                    <div>
+                                        <h4>El maestro Eliezer sorprendiendonos con su gran sentido del humor</h4>
+                                        <p>11 de marzo, 2025</p>
+                                    </div>
+                                </article>
+                                <article class="small-article">
+                                    <div class="small-image">
+                                        <img src="imagenes deportes/bad buny.jpg" alt="bad bunny">
+                                    </div>
+                                    <div>
+                                        <h4>Sebas se da festín de chocolate en Navidad 😂</h4>
+                                        <p>2 de Diciembre, 2025</p>
+                                    </div>
+                                </article>
+                                <article class="small-article">
+                                    <div class="small-image">
+                                        <img src="imagenes deportes/marcos.jpg" alt="marcos">
+                                    </div>
+                                    <div>
+                                        <h4>Marcos presumiendo su gran cabellera 🤭</h4>
+                                        <p>30 de Marzo, 2025</p>
+                                    </div>
+                                </article>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="column">
-                        <h3 class="section-title">MOMENTOS</h3>
-                        <div class="small-articles">
-                            <article class="small-article">
-                                <div class="small-image">
-                                    <img src="imagenes deportes/jeremy pintando.jpg" alt="jeremy pintando">
-                                </div>
-                                <div>
-                                    <h4>Jeremy Álcantara demostrando porque tiene 100 en Arte</h4>
-                                    <p>12 de enero, 2025</p>
-                                </div>
-                            </article>
-                            <article class="small-article">
-                                <div class="small-image">
-                                    <img src="imagenes deportes/debate.jpg" alt="debate">
-                                </div>
-                                <div>
-                                    <h4>Icónico debate de 4to A contra 4to B de Informática</h4>
-                                    <p>15 de noviembre, 2022</p>
-                                </div>
-                            </article>
-                            <article class="small-article">
-                                <div class="small-image">
-                                    <img src="imagenes deportes/santa.jpg" alt="santa">
-                                </div>
-                                <div>
-                                    <h4>Santa aparece en recreo 😱</h4>
-                                    <p>2 de diciembre, 2024</p>
-                                </div>
-                            </article>
+                        
+                        <div class="column">
+                            <h3 class="section-title">DEPORTES</h3>
+                            <div class="small-articles">
+                                <article class="small-article">
+                                    <div class="small-image">
+                                        <img src="imagenes deportes/pinguilo.jpg" alt="foto pinguilo">
+                                    </div>
+                                    <div>
+                                        <h4>Joel Isidro "Pinguilo" gana medalla de Oro en el torneo de Baloncesto Escolar de Cristo rey</h4>
+                                        <p>31 de Enero, 2024</p>
+                                    </div>
+                                </article>
+                                <article class="small-article">
+                                    <div class="small-image">
+                                        <img src="imagenes deportes/alan dunk.png" alt="Cancha de baloncesto">
+                                    </div>
+                                    <div>
+                                        <h4>Alan Hiciano machacando el Aro con autoridad</h4>
+                                        <p>13 de marzo, 2024</p>
+                                    </div>
+                                </article>
+                                <article class="small-article">
+                                    <div class="small-image">
+                                        <img src="imagenes deportes/alandunk2.png" alt="Entrenador de natación">
+                                    </div>
+                                    <div>
+                                        <h4>Alan Hiciano da espectacular show de dunks con su increible atletisismo</h4>
+                                        <p>11 de marzo, 2025</p>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                        
+                        <div class="column">
+                            <h3 class="section-title">MOMENTOS</h3>
+                            <div class="small-articles">
+                                <article class="small-article">
+                                    <div class="small-image">
+                                        <img src="imagenes deportes/jeremy pintando.jpg" alt="jeremy pintando">
+                                    </div>
+                                    <div>
+                                        <h4>Jeremy Álcantara demostrando porque tiene 100 en Arte</h4>
+                                        <p>12 de enero, 2025</p>
+                                    </div>
+                                </article>
+                                <article class="small-article">
+                                    <div class="small-image">
+                                        <img src="imagenes deportes/debate.jpg" alt="debate">
+                                    </div>
+                                    <div>
+                                        <h4>Icónico debate de 4to A contra 4to B de Informática</h4>
+                                        <p>15 de noviembre, 2022</p>
+                                    </div>
+                                </article>
+                                <article class="small-article">
+                                    <div class="small-image">
+                                        <img src="imagenes deportes/foto en blanco todos.jpg" alt="santa">
+                                    </div>
+                                    <div>
+                                        <h4>Nuestra foto en Blanco</h4>
+                                        <p>25 de Marzo, 2025</p>
+                                    </div>
+                                </article>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="columns-section">
-                <div class="column">
-                    <h3 class="section-title">RISAS</h3>
-                    <div class="small-articles">
-                        <article class="small-article">
-                            <div class="small-image">
-                                <img src="imagenes deportes/eliezer lentes.jpg" alt="eliezer lentes">
-                            </div>
-                            <div>
-                                <h4>El maestro Eliezer sorprendiendonos con su gran sentido del humor</p>
-                            </div>
-                        </article>
-                        
-                                    <article class="small-article">
-                                        <div class="small-image">
-                                            <img src="imagenes deportes/bad buny.jpg" alt="bad bunny">
-                                        </div>
-                                        <div>
-                                            <h4>Sebas se da festín de chocolate en Navidad 😂</p>
-                                        </div>
-                                    </article>
-                                    <article class="small-article">
-                                        <div class="small-image">
-                                            <img src="imagenes deportes/marcos.jpg" alt="marcos">
-                                        </div>
-                                        <div>
-                                            <h4>Marcos presumiendo su gran cabellera 🤭</p>
-                                        </div>
-                                    </article>
+
+            
             <!-- Barra lateral -->
             <div class="sidebar">
                 <!-- Próximos eventos -->
@@ -299,18 +315,18 @@
                     <div class="events-list">
                         <div class="event-item">
                             <div class="event-date">
-                                <span class="event-month">20</span>
-                                <span class="event-day">Mar</span>
+                                <span class="event-month">13</span>
+                                <span class="event-day">Mayo</span>
                             </div>
                             <div class="event-details">
-                                <h4>Feria</h4>
-                                <p>Biblioteca</p>
+                                <h4>Feria Científica</h4>
+                                <p>Cursos</p>
                             </div>
                         </div>
                         <div class="event-item">
                             <div class="event-date">
-                                <span class="event-month">22</span>
-                                <span class="event-day">Mar</span>
+                                <span class="event-month">13</span>
+                                <span class="event-day">Mayo</span>
                             </div>
                             <div class="event-details">
                                 <h4>Intec Fest</h4>
