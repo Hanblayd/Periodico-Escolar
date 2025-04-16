@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Depuración de UI - El Informador Escolar</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="user-profile.css">
+    <style>
+        body {
+            font-family: var(--font-sans);
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .debug-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            background-color: var(--color-background-muted);
+        }
+        .debug-title {
+            color: var(--color-primary);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--color-primary);
+            padding-bottom: 5px;
+        }
+        .debug-info {
+            background-color: white;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow: auto;
+        }
+        .debug-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .debug-btn {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+        }
+        .debug-btn:hover {
+            background-color: var(--color-primary-dark);
+        }
+        .ui-preview {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .preview-label {
+            font-weight: bold;
+            min-width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Depuración de Interfaz de Usuario</h1>
+    <p>Esta herramienta te ayudará a diagnosticar y solucionar problemas con la interfaz de usuario después de iniciar sesión.</p>
+    
+    <div class="debug-section">
+        <h2 class="debug-title">Estado de la Sesión</h2>
+        <div class="debug-info" id="session-info">Cargando información de sesión...</div>
+        <div class="debug-actions">
+            <button class="debug-btn" id="refresh-session">Actualizar</button>
+            <button class="debug-btn" id="clear-session">Limpiar Sesión</button>
+            <button class="debug-btn" id="create-test-session">Crear Sesión de Prueba</button>
+        </div>
+    </div>
+    
+    <div class="debug-section">
+        <h2 class="debug-title">Previsualización de UI</h2>
+        <p>Aquí puedes ver cómo deberían verse los elementos de la interfaz:</p>
+        
+        <div class="ui-preview">
+            <span class="preview-label">Sin sesión:</span>
+            <a href="#" class="auth-link"><button class="btn-outline">Inicio de sesión</button></a>
+            <a href="#" class="auth-link"><button class="btn">Registrarse</button></a>
+        </div>
+        
+        <div class="ui-preview">
+            <span class="preview-label">Con sesión:</span>
+            <div class="user-profile-container" style="display: block; position: relative;">
+                <div class="user-avatar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <div class="user-dropdown show">
+                    <div class="user-dropdown-header">
+                        <div class="user-info">
+                            <div class="user-info-avatar">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            </div>
+                            <div class="user-info-details">
+                                <div class="user-info-name">Usuario Ejemplo</div>
+                                <div class="user-info-email">usuario@ejemplo.com</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-dropdown-menu">
+                        <a href="#" class="user-dropdown-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            Mi perfil
+                        </a>
+                        <div class="user-dropdown-divider"></div>
+                        <div class="user-dropdown-footer">
+                            <div class="logout-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                                Cerrar sesión
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="debug-section">
+        <h2 class="debug-title">Verificación de Elementos DOM</h2>
+        <div class="debug-info" id="dom-info">Analizando elementos del DOM...</div>
+        <div class="debug-actions">
+            <button class="debug-btn" id="check-dom">Verificar Elementos</button>
+            <button class="debug-btn" id="fix-dom">Intentar Reparación</button>
+        </div>
+    </div>
+    
+    <div class="debug-section">
+        <h2 class="debug-title">Acciones</h2>
+        <div class="debug-actions">
+            <button class="debug-btn" id="go-home">Ir a Inicio</button>
+            <button class="debug-btn" id="force-update">Forzar Actualización UI</button>
+            <button class="debug-btn" id="reload-page">Recargar Página</button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mostrar información de sesión
+            function updateSessionInfo() {
+                const sessionInfo = document.getElementById('session-info');
+                let infoText = "=== LOCAL STORAGE ===\n";
+                
+                try {
+                    const localUser = localStorage.getItem('currentUser');
+                    if (localUser) {
+                        const userData = JSON.parse(localUser);
+                        infoText += `Usuario: ${userData.nombre} ${userData.apellido}\n`;
+                        infoText += `Email: ${userData.email}\n`;
+                        infoText += `Tipo: ${userData.tipoUsuario}\n`;
+                    } else {
+                        infoText += "No hay usuario en localStorage\n";
+                    }
+                    
+                    infoText += "\n=== SESSION STORAGE ===\n";
+                    
+                    const sessionUser = sessionStorage.getItem('currentUser');
+                    if (sessionUser) {
+                        const userData = JSON.parse(sessionUser);
+                        infoText += `Usuario: ${userData.nombre} ${userData.apellido}\n`;
+                        infoText += `Email: ${userData.email}\n`;
+                        infoText += `Tipo: ${userData.tipoUsuario}\n`;
+                    } else {
+                        infoText += "No hay usuario en sessionStorage\n";
+                    }
+                    
+                    infoText += "\n=== BANDERAS ===\n";
+                    infoText += `allowAuthPages: ${sessionStorage.getItem('allowAuthPages') || 'no establecida'}\n`;
+                    
+                } catch (error) {
+                    infoText += `\nError al procesar datos: ${error.message}`;
+                }
+                
+                sessionInfo.textContent = infoText;
+            }
+            
+            // Verificar elementos DOM
+            function checkDomElements() {
+                const domInfo = document.getElementById('dom-info');
+                let infoText = "";
+                
+                // Verificar en la página principal
+                const authLinks = document.querySelectorAll('.auth-link');
+                infoText += `Botones de autenticación encontrados: ${authLinks.length}\n`;
+                
+                const userProfileContainer = document.querySelector('.user-profile-container');
+                infoText += `Contenedor de perfil: ${userProfileContainer ? 'Encontrado' : 'No encontrado'}\n`;
+                
+                if (userProfileContainer) {
+                    infoText += `Estado de visualización: ${userProfileContainer.style.display}\n`;
+                    infoText += `Contenido: ${userProfileContainer.innerHTML.substring(0, 50)}...\n`;
+                }
+                
+                domInfo.textContent = infoText;
+            }
+            
+            // Configurar botones
+            document.getElementById('refresh-session').addEventListener('click', updateSessionInfo);
+            
+            document.getElementById('clear-session').addEventListener('click', function() {
+                localStorage.removeItem('currentUser');
+                sessionStorage.removeItem('currentUser');
+                alert('Sesión limpiada');
+                updateSessionInfo();
+            });
+            
+            document.getElementById('create-test-session').addEventListener('click', function() {
+                const testUser = {
+                    nombre: 'Usuario',
+                    apellido: 'Prueba',
+                    email: 'usuario.prueba@escuela.edu',
+                    tipoUsuario: 'estudiante'
+                };
+                
+                localStorage.setItem('currentUser', JSON.stringify(testUser));
+                alert('Sesión de prueba creada');
+                updateSessionInfo();
+            });
+            
+            document.getElementById('check-dom').addEventListener('click', checkDomElements);
+            
+            document.getElementById('fix-dom').addEventListener('click', function() {
+                // Intentar reparar elementos DOM
+                const userProfileContainer = document.querySelector('.user-profile-container');
+                if (!userProfileContainer) {
+                    alert('No se encontró el contenedor de perfil para reparar');
+                    return;
+                }
+                
+                // Asegurarse de que tenga el contenido correcto
+                userProfileContainer.innerHTML = `
+                    <div class="user-avatar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
+                `;
+                
+                alert('Se ha intentado reparar el contenedor de perfil');
+                checkDomElements();
+            });
+            
+            document.getElementById('go-home').addEventListener('click', function() {
+                window.location.href = 'index.html';
+            });
+            
+            document.getElementById('force-update').addEventListener('click', function() {
+                // Forzar actualización de UI basada en el estado de sesión
+                const currentUser = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || 'null');
+                
+                if (currentUser) {
+                    const authLinks = document.querySelectorAll('.auth-link');
+                    const userProfileContainer = document.querySelector('.user-profile-container');
+                    
+                    if (authLinks.length > 0 && userProfileContainer) {
+                        // Ocultar botones de login/registro
+                        authLinks.forEach((link) => {
+                            link.style.display = "none";
+                        });
+                        
+                        // Mostrar el contenedor de perfil
+                        userProfileContainer.style.display = "block";
+                        
+                        // Asegurarse de que tenga el avatar
+                        if (!userProfileContainer.querySelector('.user-avatar')) {
+                            userProfileContainer.innerHTML = `
+                                <div class="user-avatar">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                </div>
+                            `;
+                        }
+                        
+                        alert('Interfaz actualizada manualmente');
+                    } else {
+                        alert('No se encontraron los elementos necesarios para actualizar la interfaz');
+                    }
+                } else {
+                    alert('No hay usuario con sesión iniciada');
+                }
+                
+                checkDomElements();
+            });
+            
+            document.getElementById('reload-page').addEventListener('click', function() {
+                window.location.reload();
+            });
+            
+            // Inicializar
+            updateSessionInfo();
+            checkDomElements();
+        });
+    </script>
+</body>
+</html>
