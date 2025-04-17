@@ -915,16 +915,12 @@ button {
 }
 
 /* Estilo para categorías específicas */
-.noticia-categoria:contains(\"Académicas
-") {
-background-color: #3498db
-;
+.noticia-categoria:contains("Académicas") {
+background-color: #3498db;
 }
-
 .noticia-categoria:contains("Deportes") {
-  background-color:or: #2ecc71;
+  background-color: #2ecc71;
 }
-
 .noticia-categoria:contains("Cultura") {
   background-color: #9b59b6;
 }
