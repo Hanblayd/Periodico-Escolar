@@ -913,22 +913,6 @@ button {
 .noticia-enlace:hover:after {
   width: 100%;
 }
-
-/* Estilo para categorías específicas */
-.noticia-categoria:contains("Académicas") {
-background-color: #3498db;
-}
-.noticia-categoria:contains("Deportes") {
-  background-color: #2ecc71;
-}
-.noticia-categoria:contains("Cultura") {
-  background-color: #9b59b6;
-}
-
-.noticia-categoria:contains("Eventos") {
-  background-color: #f39c12;
-}
-
 /* Paginación */
 .noticias-paginacion {
   display: flex;
