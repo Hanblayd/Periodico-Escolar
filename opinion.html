@@ -99,12 +99,14 @@
           <div class="logo-container">
             <!-- Espacio para el logo -->
             <div class="newspaper-logo">
-              <img src="logo/isotipo yoan.png" alt="logo" />
+              <a href="inicio.html"
+                ><img src="logo/isotipo yoan.png" alt="logo"
+              /></a>
             </div>
           </div>
           <div class="newspaper-title">
             <h1>El Informador Escolar</h1>
-            <p>La voz de nuestra comunidad educativa</p>
+            <p>Politécnico San Pablo Apostol</p>
           </div>
         </div>
 
@@ -116,13 +118,52 @@
             <li><a href="eventos.html">EVENTOS</a></li>
             <li><a href="deportes.html">DEPORTES</a></li>
             <li><a href="cultura.html">CULTURA</a></li>
-            <li><a href="opinion.html" class="active">OPINIÓN</a></li>
+            <li><a href="opinion.html"class="active">OPINIÓN</a></li>
             <li><a href="galeria.html">GALERÍA</a></li>
           </ul>
         </nav>
       </div>
     </header>
-
+    <section class="opinion-surveys">
+      <h2>Encuestas de Opinión</h2>
+    
+      <div class="survey-card" data-survey="1">
+        <h3>¿Qué te pareció la actividad del campamento?</h3>
+        <form>
+          <label><input type="radio" name="campamento" value="Excelente" /> Excelente</label>
+          <label><input type="radio" name="campamento" value="Buena" /> Buena</label>
+          <label><input type="radio" name="campamento" value="Regular" /> Regular</label>
+          <label><input type="radio" name="campamento" value="Mala" /> Mala</label>
+          <button type="button" class="vote-btn">Votar</button>
+        </form>
+        <div class="results" style="display: none"></div>
+      </div>
+    
+      <div class="survey-card" data-survey="2">
+        <h3>¿Qué materia disfrutas más?</h3>
+        <form>
+          <label><input type="radio" name="materia" value="Matemáticas" /> Matemáticas</label>
+          <label><input type="radio" name="materia" value="Lengua Española" /> Lengua Española</label>
+          <label><input type="radio" name="materia" value="Ciencias Sociales" /> Ciencias Sociales</label>
+          <label><input type="radio" name="materia" value="Informática" /> Informática</label>
+          <button type="button" class="vote-btn">Votar</button>
+        </form>
+        <div class="results" style="display: none"></div>
+      </div>
+    
+      <div class="survey-card" data-survey="3">
+        <h3>¿Te gustaría más actividades culturales?</h3>
+        <form>
+          <label><input type="radio" name="cultura" value="Sí, muchas más" /> Sí, muchas más</label>
+          <label><input type="radio" name="cultura" value="Tal vez algunas" /> Tal vez algunas</label>
+          <label><input type="radio" name="cultura" value="No hace falta" /> No hace falta</label>
+          <button type="button" class="vote-btn">Votar</button>
+        </form>
+        <div class="results" style="display: none"></div>
+      </div>
+    </section>
+    
+    <script src="script.js"></script>
     <!-- Pie de página -->
     <footer class="footer">
       <div class="container">

@@ -143,3 +143,40 @@ document.addEventListener("DOMContentLoaded", () => {
   // Ejecutar verificación de sesión
   checkUserSession()
 })
+document.querySelectorAll('.vote-btn').forEach((button) => {
+  button.addEventListener('click', () => {
+    const card = button.closest('.survey-card');
+    const inputs = card.querySelectorAll('input[type="radio"]');
+    const selected = [...inputs].find((i) => i.checked);
+
+    if (!selected) {
+      alert('Selecciona una opción antes de votar.');
+      return;
+    }
+
+    const opciones = [...inputs].map((i) => i.value);
+    const votos = {};
+    opciones.forEach((op) => (votos[op] = Math.floor(Math.random() * 5)));
+    votos[selected.value] += 1;
+
+    const total = Object.values(votos).reduce((a, b) => a + b, 0);
+    const resultsDiv = card.querySelector('.results');
+    resultsDiv.innerHTML = opciones
+      .map(
+        (op) => `
+        <div>
+          <strong>${op}:</strong> 
+          ${((votos[op] / total) * 100).toFixed(1)}%
+          <div>
+            <div style="background:#4caf50; width:${(votos[op] / total) * 100}%; height:10px;"></div>
+          </div>
+        </div>
+      `
+      )
+      .join('<br>');
+
+    resultsDiv.style.display = 'block';
+    button.disabled = true;
+    inputs.forEach((i) => (i.disabled = true));
+  });
+});
