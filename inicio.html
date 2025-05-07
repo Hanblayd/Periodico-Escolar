@@ -107,11 +107,30 @@
           </div>
           <div class="newspaper-title">
             <h1>El Informador Escolar</h1>
-            <p>Politecnico San Pablo apostol</p>
+            <p>Liceo y Politécnico San Pablo Apóstol</p>
           </div>
         </div>
 
-        <!-- Menú de navegación -->
+        <!-- Botón de menú móvil -->
+        <button id="mobile-menu-toggle" class="mobile-menu-toggle">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
+        <!-- Menú de navegación para escritorio -->
         <nav class="main-nav">
           <ul>
             <li><a href="inicio.html" class="active">INICIO</a></li>
@@ -123,6 +142,36 @@
             <li><a href="galeria.html">GALERÍA</a></li>
           </ul>
         </nav>
+        
+        <!-- Menú móvil -->
+        <div class="mobile-menu-overlay"></div>
+        <div class="mobile-menu">
+          <button class="mobile-menu-close">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <ul>
+            <li><a href="inicio.html" class="active">INICIO</a></li>
+            <li><a href="noticias.html">NOTICIAS</a></li>
+            <li><a href="eventos.html">EVENTOS</a></li>
+            <li><a href="deportes.html">DEPORTES</a></li>
+            <li><a href="cultura.html">CULTURA</a></li>
+            <li><a href="opinion.html">OPINIÓN</a></li>
+            <li><a href="galeria.html">GALERÍA</a></li>
+          </ul>
+        </div>
       </div>
     </header>
 
@@ -131,13 +180,28 @@
       <div class="grid-layout">
         <!-- Columna principal -->
         <div class="main-column">
-          <!-- Noticia principal -->
+          <!-- Noticia principal con galería integrada -->
           <div class="featured-news">
-            <div class="featured-image">
-              <img
-                src="imagenes deportes/foto en blanco todos.jpg"
-                alt="Imagen de la noticia principal"
-              />
+            <!-- Galería de fotos dentro de la noticia destacada -->
+            <div class="featured-gallery">
+              <div class="gallery-container">
+                <!-- Las imágenes se cargarán dinámicamente con JavaScript -->
+              </div>
+              <div class="gallery-nav">
+                <button class="gallery-prev">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                  </svg>
+                </button>
+                <button class="gallery-next">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </button>
+              </div>
+              <div class="gallery-dots">
+                <!-- Los puntos se generarán dinámicamente con JavaScript -->
+              </div>
             </div>
             <span class="tag">DESTACADO</span>
             <h2>Nuestra Foto en Blanco</h2>
@@ -693,6 +757,23 @@
         </div>
       </div>
     </footer>
+
+    <!-- Botón de volver arriba -->
+    <button class="back-to-top">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+    </button>
 
     <script src="script.js"></script>
   </body>
