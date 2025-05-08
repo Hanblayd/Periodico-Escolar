@@ -1211,7 +1211,7 @@ button {
 }
 
 .noticia-card {
-  display: flex;
+  /* display: flex; (por ser necesario)*/
   flex-direction: column;
   background-color: white;
   border-radius: var(--border-radius);
@@ -1237,7 +1237,7 @@ button {
 }
 
 .noticia-contenido {
-  padding: 1rem;
+padding: 1rem;
 }
 
 .noticia-categoria {
