@@ -91,21 +91,42 @@ document.addEventListener("DOMContentLoaded", () => {
         alt: "Foto en blanco todos",
       },
       {
-        src: "imagenes/foto en blanco 1.jpeg",
+        src: "imagenes/varones de lado.jpg",
         alt: "Celebración navideña",
       },
       {
-        src: "imagenes/foto en blanco 2.jpeg",
+        src: "imagenes/varones de frente.jpg",
         alt: "Celebración navideña",
       },
       {
-        src: "imagenes/foto en blanco 3.jpeg",
+        src: "imagenes/mujeres de frente.jpg",
         alt: "Celebración navideña",
       },
       {
-        src: "imagenes/foto en blanco 4.jpeg",
+        src: "imagenes/mujeres beso.jpg",
         alt: "Celebración navideña",
       },
+      {
+        src: "imagenes/eliezer calvo.jpg",
+        alt: "Celebración navideña",
+      },
+      {
+        src: "imagenes/nosotros cualto.jpg",
+        alt: "Celebración navideña",
+      },
+      {
+        src: "imagenes/asli y suero.jpg",
+        alt: "Celebración navideña",
+      },
+      {
+        src: "imagenes/grupo 3.jpg",
+        alt: "Celebración navideña",
+      },
+      {
+        src: "imagenes/la 3.jpg",
+        alt: "Celebración navideña",
+      },
+     
       // Puedes agregar o quitar imágenes aquí sin romper la estructura
     ]
 
