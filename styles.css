@@ -1117,10 +1117,6 @@ button {
   font-size: 0.875rem;
 }
 
-.evento2.especial {
-  border: 2px solid var(--color-primary);
-}
-
 /* Estilos para la sección de eventos */
 .eventos {
   display: grid;
@@ -1210,7 +1206,7 @@ button {
 }
 
 .noticia-card {
-  display: flex;
+  /* display: flex; (por ser necesario)*/
   flex-direction: column;
   background-color: white;
   border-radius: var(--border-radius);
@@ -1236,7 +1232,7 @@ button {
 }
 
 .noticia-contenido {
-  padding: 1rem;
+padding: 1rem;
 }
 
 .noticia-categoria {
