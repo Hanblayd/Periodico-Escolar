@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Periódico Escolar</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../admin-styles.css">
+    <link rel="icon" href="../logo/isotipo yoan.png">
+    <style>
+        /* Estilos adicionales para el panel mejorado */
+        .admin-section {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .tag-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 8px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+        }
+        
+        .tag-item input {
+            margin-right: 10px;
+        }
+        
+        .tag-actions {
+            margin-left: auto;
+        }
+        
+        .news-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .form-full-width {
+            grid-column: 1 / 3;
+        }
+        
+        .tag-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .tag-checkbox {
+            display: inline-flex;
+            align-items: center;
+            background-color: #e9e9e9;
+            padding: 5px 10px;
+            border-radius: 15px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .preview-container {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 4px;
+            background-color: white;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom: 2px solid #007bff;
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .section-selector {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>Panel de Administración</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Volver al Periódico</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="admin-container">
+        <div class="tabs">
+            <div class="tab active" data-tab="encuestas">Encuestas</div>
+            <div class="tab" data-tab="etiquetas">Etiquetas</div>
+            <div class="tab" data-tab="noticias">Gestión de Noticias</div>
+            <div class="tab" data-tab="usuarios">Usuarios</div>
+            <div class="tab" data-tab="estadisticas">Estadísticas</div>
+        </div>
+
+        <!-- Sección de Encuestas (existente) -->
+        <div class="tab-content active" id="encuestas-tab">
+            <div class="admin-section">
+                <h2>Gestión de Encuestas</h2>
+                <form id="poll-form">
+                    <div>
+                        <label for="poll-question">Pregunta:</label>
+                        <input type="text" id="poll-question" required>
+                    </div>
+                    <div id="options-container">
+                        <div class="option-group">
+                            <label for="option1">Opción 1:</label>
+                            <input type="text" class="poll-option" required>
+                            <button type="button" class="remove-option">Eliminar</button>
+                        </div>
+                        <div class="option-group">
+                            <label for="option2">Opción 2:</label>
+                            <input type="text" class="poll-option" required>
+                            <button type="button" class="remove-option">Eliminar</button>
+                        </div>
+                    </div>
+                    <button type="button" id="add-option">Añadir Opción</button>
+                    <div>
+                        <label for="poll-location">Ubicación:</label>
+                        <select id="poll-location">
+                            <option value="index.html">Página Principal</option>
+                            <option value="noticias.html">Noticias</option>
+                            <option value="deportes.html">Deportes</option>
+                            <option value="cultura.html">Cultura</option>
+                            <option value="opinion.html">Opinión</option>
+                            <option value="eventos.html">Eventos</option>
+                        </select>
+                    </div>
+                    <button type="submit">Crear Encuesta</button>
+                </form>
+                <div id="polls-list">
+                    <h3>Encuestas Activas</h3>
+                    <div id="active-polls"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nueva Sección de Etiquetas -->
+        <div class="tab-content" id="etiquetas-tab">
+            <div class="admin-section">
+                <h2>Gestión de Etiquetas</h2>
+                <form id="tag-form">
+                    <div>
+                        <label for="tag-name">Nueva Etiqueta:</label>
+                        <input type="text" id="tag-name" required>
+                        <button type="submit">Añadir Etiqueta</button>
+                    </div>
+                </form>
+                
+                <div id="tags-list">
+                    <h3>Etiquetas Existentes</h3>
+                    <div id="existing-tags">
+                        <!-- Las etiquetas se cargarán dinámicamente aquí -->
+                    </div>
+                </div>
+                
+                <div id="tag-assignment">
+                    <h3>Asignar Etiquetas a Noticias</h3>
+                    <div>
+                        <label for="news-selector">Seleccionar Noticia:</label>
+                        <select id="news-selector">
+                            <!-- Las noticias se cargarán dinámicamente aquí -->
+                        </select>
+                    </div>
+                    <div id="news-tags">
+                        <h4>Etiquetas para esta noticia:</h4>
+                        <div id="news-tags-list" class="tag-selector">
+                            <!-- Las etiquetas para la noticia seleccionada se mostrarán aquí -->
+                        </div>
+                        <button id="save-news-tags">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nueva Sección de Gestión de Noticias -->
+        <div class="tab-content" id="noticias-tab">
+            <div class="admin-section">
+                <h2>Crear/Editar Noticias</h2>
+                <form id="news-form" class="news-form">
+                    <div class="section-selector form-full-width">
+                        <label for="news-section">Sección:</label>
+                        <select id="news-section" required>
+                            <option value="index.html">Página Principal</option>
+                            <option value="noticias.html">Noticias</option>
+                            <option value="deportes.html">Deportes</option>
+                            <option value="cultura.html">Cultura</option>
+                            <option value="opinion.html">Opinión</option>
+                            <option value="eventos.html">Eventos</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="news-title">Título:</label>
+                        <input type="text" id="news-title" required>
+                    </div>
+                    
+                    <div>
+                        <label for="news-author">Autor:</label>
+                        <input type="text" id="news-author" required>
+                    </div>
+                    
+                    <div>
+                        <label for="news-date">Fecha:</label>
+                        <input type="date" id="news-date" required>
+                    </div>
+                    
+                    <div>
+                        <label for="news-image">URL de Imagen:</label>
+                        <input type="text" id="news-image" placeholder="https://ejemplo.com/imagen.jpg">
+                    </div>
+                    
+                    <div class="form-full-width">
+                        <label for="news-summary">Resumen (para vista previa):</label>
+                        <textarea id="news-summary" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-full-width">
+                        <label for="news-content">Contenido Completo:</label>
+                        <textarea id="news-content" rows="10" required></textarea>
+                    </div>
+                    
+                    <div class="form-full-width">
+                        <label>Etiquetas:</label>
+                        <div id="news-form-tags" class="tag-selector">
+                            <!-- Las etiquetas se cargarán dinámicamente aquí -->
+                        </div>
+                    </div>
+                    
+                    <div class="form-full-width">
+                        <h3>Vista Previa</h3>
+                        <div class="preview-container">
+                            <div id="news-preview"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-full-width">
+                        <button type="submit" id="save-news">Publicar Noticia</button>
+                        <button type="button" id="clear-news-form">Limpiar Formulario</button>
+                    </div>
+                </form>
+                
+                <div id="news-list">
+                    <h3>Noticias Publicadas</h3>
+                    <div id="published-news">
+                        <!-- Las noticias publicadas se mostrarán aquí -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nueva Sección de Usuarios -->
+        <div class="tab-content" id="usuarios-tab">
+            <div class="admin-section">
+                <h2>Gestión de Usuarios</h2>
+                <div id="users-list">
+                    <h3>Usuarios Registrados</h3>
+                    <table id="users-table">
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Email</th>
+                                <th>Fecha de Registro</th>
+                                <th>Rol</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-data">
+                            <!-- Los usuarios se cargarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nueva Sección de Estadísticas -->
+        <div class="tab-content" id="estadisticas-tab">
+            <div class="admin-section">
+                <h2>Estadísticas del Sitio</h2>
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <h3>Visitas Totales</h3>
+                        <p id="total-visits">Cargando...</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Noticias Publicadas</h3>
+                        <p id="total-news">Cargando...</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Usuarios Registrados</h3>
+                        <p id="total-users">Cargando...</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Comentarios</h3>
+                        <p id="total-comments">Cargando...</p>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <h3>Visitas por Sección</h3>
+                    <div id="section-visits-chart">
+                        <!-- Aquí se mostrará un gráfico de barras simple -->
+                        <div class="chart-bar-container">
+                            <div class="chart-label">Inicio</div>
+                            <div class="chart-bar" style="width: 80%;" data-value="80%"></div>
+                        </div>
+                        <div class="chart-bar-container">
+                            <div class="chart-label">Noticias</div>
+                            <div class="chart-bar" style="width: 65%;" data-value="65%"></div>
+                        </div>
+                        <div class="chart-bar-container">
+                            <div class="chart-label">Deportes</div>
+                            <div class="chart-bar" style="width: 45%;" data-value="45%"></div>
+                        </div>
+                        <div class="chart-bar-container">
+                            <div class="chart-label">Cultura</div>
+                            <div class="chart-bar" style="width: 30%;" data-value="30%"></div>
+                        </div>
+                        <div class="chart-bar-container">
+                            <div class="chart-label">Opinión</div>
+                            <div class="chart-bar" style="width: 25%;" data-value="25%"></div>
+                        </div>
+                        <div class="chart-bar-container">
+                            <div class="chart-label">Eventos</div>
+                            <div class="chart-bar" style="width: 35%;" data-value="35%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Periódico Escolar. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="../script.js"></script>
+    <script>
+        // Código para manejar las pestañas
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Desactivar todas las pestañas
+                    tabs.forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                    
+                    // Activar la pestaña seleccionada
+                    this.classList.add('active');
+                    const tabName = this.getAttribute('data-tab');
+                    document.getElementById(`${tabName}-tab`).classList.add('active');
+                });
+            });
+            
+            // Cargar datos iniciales
+            cargarEtiquetas();
+            cargarNoticias();
+            cargarUsuarios();
+            actualizarEstadisticas();
+            
+            // Event listeners para formularios
+            document.getElementById('tag-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                agregarEtiqueta();
+            });
+            
+            document.getElementById('news-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                publicarNoticia();
+            });
+            
+            document.getElementById('clear-news-form').addEventListener('click', function() {
+                document.getElementById('news-form').reset();
+                document.getElementById('news-preview').innerHTML = '';
+            });
+            
+            // Vista previa en tiempo real
+            document.getElementById('news-title').addEventListener('input', actualizarVistaPrevia);
+            document.getElementById('news-summary').addEventListener('input', actualizarVistaPrevia);
+            document.getElementById('news-image').addEventListener('input', actualizarVistaPrevia);
+            
+            // Selector de noticias para asignar etiquetas
+            document.getElementById('news-selector').addEventListener('change', function() {
+                cargarEtiquetasDeNoticia(this.value);
+            });
+            
+            document.getElementById('save-news-tags').addEventListener('click', guardarEtiquetasDeNoticia);
+        });
+        
+        // Funciones para gestión de etiquetas
+        function cargarEtiquetas() {
+            // Obtener etiquetas del localStorage o crear un array vacío si no existen
+            const etiquetas = JSON.parse(localStorage.getItem('etiquetas')) || [];
+            
+            // Mostrar etiquetas existentes
+            const etiquetasContainer = document.getElementById('existing-tags');
+            etiquetasContainer.innerHTML = '';
+            
+            if (etiquetas.length === 0) {
+                etiquetasContainer.innerHTML = '<p>No hay etiquetas creadas.</p>';
+                return;
+            }
+            
+            etiquetas.forEach(etiqueta => {
+                const etiquetaElement = document.createElement('div');
+                etiquetaElement.className = 'tag-item';
+                etiquetaElement.innerHTML = `
+                    <input type="text" value="${etiqueta}" data-original="${etiqueta}">
+                    <div class="tag-actions">
+                        <button type="button" class="save-tag" data-tag="${etiqueta}">Guardar</button>
+                        <button type="button" class="delete-tag" data-tag="${etiqueta}">Eliminar</button>
+                    </div>
+                `;
+                etiquetasContainer.appendChild(etiquetaElement);
+            });
+            
+            // Añadir event listeners para los botones de guardar y eliminar
+            document.querySelectorAll('.save-tag').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const originalTag = this.getAttribute('data-tag');
+                    const newTag = this.parentElement.parentElement.querySelector('input').value;
+                    actualizarEtiqueta(originalTag, newTag);
+                });
+            });
+            
+            document.querySelectorAll('.delete-tag').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tag = this.getAttribute('data-tag');
+                    eliminarEtiqueta(tag);
+                });
+            });
+            
+            // Actualizar también los checkboxes en el formulario de noticias
+            actualizarCheckboxesEtiquetas();
+        }
+        
+        function agregarEtiqueta() {
+            const nombreEtiqueta = document.getElementById('tag-name').value.trim();
+            
+            if (!nombreEtiqueta) return;
+            
+            // Obtener etiquetas existentes
+            const etiquetas = JSON.parse(localStorage.getItem('etiquetas')) || [];
+            
+            // Verificar si la etiqueta ya existe
+            if (etiquetas.includes(nombreEtiqueta)) {
+                alert('Esta etiqueta ya existe.');
+                return;
+            }
+            
+            // Añadir la nueva etiqueta
+            etiquetas.push(nombreEtiqueta);
+            localStorage.setItem('etiquetas', JSON.stringify(etiquetas));
+            
+            // Limpiar el formulario
+            document.getElementById('tag-name').value = '';
+            
+            // Recargar la lista de etiquetas
+            cargarEtiquetas();
+        }
+        
+        function actualizarEtiqueta(originalTag, newTag) {
+            if (!newTag.trim()) {
+                alert('El nombre de la etiqueta no puede estar vacío.');
+                return;
+            }
+            
+            // Obtener etiquetas existentes
+            const etiquetas = JSON.parse(localStorage.getItem('etiquetas')) || [];
+            
+            // Verificar si el nuevo nombre ya existe (excepto si es el mismo)
+            if (newTag !== originalTag && etiquetas.includes(newTag)) {
+                alert('Ya existe una etiqueta con ese nombre.');
+                return;
+            }
+            
+            // Actualizar la etiqueta
+            const index = etiquetas.indexOf(originalTag);
+            if (index !== -1) {
+                etiquetas[index] = newTag;
+                localStorage.setItem('etiquetas', JSON.stringify(etiquetas));
+                
+                // Actualizar también en las noticias
+                actualizarEtiquetaEnNoticias(originalTag, newTag);
+                
+                // Recargar la lista de etiquetas
+                cargarEtiquetas();
+            }
+        }
+        
+        function eliminarEtiqueta(tag) {
+            if (confirm(`¿Estás seguro de que deseas eliminar la etiqueta "${tag}"?`)) {
+                // Obtener etiquetas existentes
+                const etiquetas = JSON.parse(localStorage.getItem('etiquetas')) || [];
+                
+                // Eliminar la etiqueta
+                const index = etiquetas.indexOf(tag);
+                if (index !== -1) {
+                    etiquetas.splice(index, 1);
+                    localStorage.setItem('etiquetas', JSON.stringify(etiquetas));
+                    
+                    // Eliminar la etiqueta de todas las noticias
+                    eliminarEtiquetaDeNoticias(tag);
+                    
+                    // Recargar la lista de etiquetas
+                    cargarEtiquetas();
+                }
+            }
+        }
+        
+        function actualizarEtiquetaEnNoticias(oldTag, newTag) {
+            // Obtener todas las noticias
+            const noticias = JSON.parse(localStorage.getItem('noticias')) || [];
+            
+            // Actualizar la etiqueta en cada noticia
+            noticias.forEach(noticia => {
+                if (noticia.etiquetas && noticia.etiquetas.includes(oldTag)) {
+                    const index = noticia.etiquetas.indexOf(oldTag);
+                    noticia.etiquetas[index] = newTag;
+                }
+            });
+            
+            // Guardar las noticias actualizadas
+            localStorage.setItem('noticias', JSON.stringify(noticias));
+        }
+        
+        function eliminarEtiquetaDeNoticias(tag) {
+            // Obtener todas las noticias
+            const noticias = JSON.parse(localStorage.getItem('noticias')) || [];
+            
+            // Eliminar la etiqueta de cada noticia
+            noticias.forEach(noticia => {
+                if (noticia.etiquetas && noticia.etiquetas.includes(tag)) {
+                    noticia.etiquetas = noticia.etiquetas.filter(t => t !== tag);
+                }
+            });
+            
+            // Guardar las noticias actualizadas
+            localStorage.setItem('noticias', JSON.stringify(noticias));
+        }
+        
+        function actualizarCheckboxesEtiquetas() {
+            // Obtener etiquetas
+            const etiquetas = JSON.parse(localStorage.getItem('etiquetas')) || [];
+            
+            // Actualizar checkboxes en el formulario de noticias
+            const tagsContainer = document.getElementById('news-form-tags');
+            tagsContainer.innerHTML = '';
+            
+            if (etiquetas.length === 0) {
+                tagsContainer.innerHTML = '<p>No hay etiquetas disponibles. Crea etiquetas primero.</p>';
+                return;
+            }
+            
+            etiquetas.forEach(etiqueta => {
+                const tagCheckbox = document.createElement('label');
+                tagCheckbox.className = 'tag-checkbox';
+                tagCheckbox.innerHTML = `
+                    <input type="checkbox" name="news-tags" value="${etiqueta}"> ${etiqueta}
+                `;
+                tagsContainer.appendChild(tagCheckbox);
+            });
+        }
+        
+        // Funciones para gestión de noticias
+        function cargarNoticias() {
+            // Obtener noticias del localStorage
+            const noticias = JSON.parse(localStorage.getItem('noticias')) || [];
+            
+            // Actualizar el selector de noticias para asignar etiquetas
+            const newsSelector = document.getElementById('news-selector');
+            newsSelector.innerHTML = '<option value="">Selecciona una noticia</option>';
+            
+            noticias.forEach(noticia => {
+                const option = document.createElement('option');
+                option.value = noticia.id;
+                option.textContent = noticia.titulo;
+                newsSelector.appendChild(option);
+            });
+            
+            // Mostrar noticias publicadas
+            const publishedNews = document.getElementById('published-news');
+            publishedNews.innerHTML = '';
+            
+            if (noticias.length === 0) {
+                publishedNews.innerHTML = '<p>No hay noticias publicadas.</p>';
+                return;
+            }
+            
+            noticias.forEach(noticia => {
+                const noticiaElement = document.createElement('div');
+                noticiaElement.className = 'news-item';
+                noticiaElement.innerHTML = `
+                    <h4>${noticia.titulo}</h4>
+                    <p><strong>Sección:</strong> ${obtenerNombreSeccion(noticia.seccion)}</p>
+                    <p><strong>Autor:</strong> ${noticia.autor}</p>
+                    <p><strong>Fecha:</strong> ${noticia.fecha}</p>
+                    <div class="news-actions">
+                        <button type="button" class="edit-news" data-id="${noticia.id}">Editar</button>
+                        <button type="button" class="delete-news" data-id="${noticia.id}">Eliminar</button>
+                    </div>
+                `;
+                publishedNews.appendChild(noticiaElement);
+            });
+            
+            // Añadir event listeners para los botones de editar y eliminar
+            document.querySelectorAll('.edit-news').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    cargarNoticiaParaEditar(id);
+                });
+            });
+            
+            document.querySelectorAll('.delete-news').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    eliminarNoticia(id);
+                });
+            });
+        }
+        
+        function obtenerNombreSeccion(seccionUrl) {
+            const secciones = {
+                'index.html': 'Página Principal',
+                'noticias.html': 'Noticias',
+                'deportes.html': 'Deportes',
+                'cultura.html': 'Cultura',
+                'opinion.html': 'Opinión',
+                'eventos.html': 'Eventos'
+            };
+            
+            return secciones[seccionUrl] || seccionUrl;
+        }
+        
+        function cargarNoticiaParaEditar(id) {
+            // Obtener noticias
+            const noticias = JSON.parse(localStorage.getItem('noticias')) || [];
+            
+            // Encontrar la noticia
+            const noticia = noticias.find(n => n.id === id);
+            
+            if (!noticia) return;
+            
+            // Cargar los datos en el formulario
+            document.getElementById('news-section').value = noticia.seccion;
+            document.getElementById('news-title').value = noticia.titulo;
+            document.getElementById('news-author').value = noticia.autor;
+            document.getElementById('news-date').value = noticia.fecha;
+            document.getElementById('news-image').value = noticia.imagen;
+            document.getElementById('news-summary').value = noticia.resumen;
+            document.getElementById('news-content').value = noticia.contenido;
+            
+            // Marcar las etiquetas correspondientes
+            document.querySelectorAll('input[name="news-tags"]').forEach(checkbox => {
+                checkbox.checked = noticia.etiquetas && noticia.etiquetas.includes(checkbox.value);
+            });
+            
+            // Guardar el ID para la edición
+            document.getElementById('news-form').setAttribute('data-edit-id', id);
+            
+            // Cambiar el texto del botón
+            document.getElementById('save-news').textContent = 'Actualizar Noticia';
+            
+            // Actualizar vista previa
+            actualizarVistaPrevia();
+            
+            // Desplazarse al formulario
+            document.getElementById('news-form').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function publicarNoticia() {
+            // Obtener datos del formulario
+            const seccion = document.getElementById('news-section').value;
+            const titulo = document.getElementById('news-title').value;
+            const autor = document.getElementById('news-author').value;
+            const fecha = document.getElementById('news-date').value;
+            const imagen = document.getElementById('news-image').value;
+            const resumen = document.getElementById('news-summary').value;
+            const contenido = document.getElementById('news-content').value;
+            
+            // Obtener etiquetas seleccionadas
+            const etiquetas = [];
+            document.querySelectorAll('input[name="news-tags"]:checked').forEach(checkbox => {
+                etiquetas.push(checkbox.value);
+            });
+            
+            // Verificar si es una edición o una nueva noticia
+            const editId = document.getElementById('news-form').getAttribute('data-edit-id');
+            
+            // Obtener noticias existentes
+            const noticias = JSON.parse(localStorage.getItem('noticias')) || [];
+            
+            if (editId) {
+                // Editar noticia existente
+                const index = noticias.findIndex(n => n.id === editId);
+                
+                if (index !== -1) {
+                    noticias[index] = {
+                        id: editId,
+                        seccion,
+                        titulo,
+                        autor,
+                        fecha,
+                        imagen,
+                        resumen,
+                        contenido,
+                        etiquetas
+                    };
+                }
+            } else {
+                // Crear nueva noticia
+                const nuevaNoticia = {
+                    id: Date.now().toString(),
+                    seccion,
+                    titulo,
+                    autor,
+                    fecha,
+                    imagen,
+                    resumen,
+                    contenido,
+                    etiquetas
+                };
+                
+                noticias.push(nuevaNoticia);
+            }
+            
+            // Guardar noticias
+            localStorage.setItem('noticias', JSON.stringify(noticias));
+            
+            // Limpiar formulario
+            document.getElementById('news-form').reset();
+            document.getElementById('news-form').removeAttribute('data-edit-id');
+            document.getElementById('save-news').textContent = 'Publicar Noticia';
+            document.getElementById('news-preview').innerHTML = '';
+            
+            // Recargar noticias
+            cargarNoticias();
+            
+            // Mostrar mensaje
+            alert(editId ? 'Noticia actualizada correctamente.' : 'Noticia publicada correctamente.');
+        }
+        
+        function eliminarNoticia(id) {
+            if (confirm('¿Estás seguro de que deseas eliminar esta noticia?')) {
+                // Obtener noticias
+                const noticias = JSON.parse(localStorage.getItem('noticias')) || [];
+                
+                // Eliminar la noticia
+                const nuevasNoticias = noticias.filter(n => n.id !== id);
+                
+                // Guardar noticias
+                localStorage.setItem('noticias', JSON.stringify(nuevasNoticias));
+                
+                // Recargar noticias
+                cargarNoticias();
+            }
+        }
+        
+        function actualizarVistaPrevia() {
+            const titulo = document.getElementById('news-title').value;
+            const resumen = document.getElementById('news-summary').value;
+            const imagen = document.getElementById('news-image').value;
+            
+            const previewContainer = document.getElementById('news-preview');
+            
+            if (!titulo && !resumen) {
+                previewContainer.innerHTML = '<p>Completa el formulario para ver la vista previa.</p>';
+                return;
+            }
+            
+            previewContainer.innerHTML = `
+                <div class="noticia-preview">
+                    <h3>${titulo || 'Título de la noticia'}</h3>
+                    ${imagen ? `<img src="${imagen}" alt="${titulo}" style="max-width: 100%; height: auto;">` : ''}
+                    <p>${resumen || 'Resumen de la noticia...'}</p>
+                </div>
+            `;
+        }
+        
+        // Funciones para gestión de etiquetas de noticias
+        function cargarEtiquetasDeNoticia(noticiaId) {
+            if (!noticiaId) return;
+            
+            // Obtener noticias
+            const noticias = JSON.parse(localStorage.getItem('noticias')) || [];
+            
+            // Encontrar la noticia
+            const noticia = noticias.find(n => n.id === noticiaId);
+            
+            if (!noticia) return;
+            
+            // Obtener todas las etiquetas
+            const etiquetas = JSON.parse(localStorage.getItem('etiquetas')) || [];
+            
+            // Mostrar las etiquetas con checkboxes
+            const newsTagsList = document.getElementById('news-tags-list');
+            newsTagsList.innerHTML = '';
+            
+            etiquetas.forEach(etiqueta => {
+                const isChecked = noticia.etiquetas && noticia.etiquetas.includes(etiqueta);
+                
+                const tagCheckbox = document.createElement('label');
+                tagCheckbox.className = 'tag-checkbox';
+                tagCheckbox.innerHTML = `
+                    <input type="checkbox" name="edit-news-tags" value="${etiqueta}" ${isChecked ? 'checked' : ''}> ${etiqueta}
+                `;
+                newsTagsList.appendChild(tagCheckbox);
+            });
+            
+            // Guardar el ID de la noticia para el guardado
+            document.getElementById('news-tags').setAttribute('data-noticia-id', noticiaId);
+        }
+        
+        function guardarEtiquetasDeNoticia() {
+            const noticiaId = document.getElementById('news-tags').getAttribute('data-noticia-id');
+            
+            if (!noticiaId) return;
+            
+            // Obtener etiquetas seleccionadas
+            const etiquetasSeleccionadas = [];
+            document.querySelectorAll('input[name="edit-news-tags"]:checked').forEach(checkbox => {
+                etiquetasSeleccionadas.push(checkbox.value);
+            });
+            
+            // Obtener noticias
+            const noticias = JSON.parse(localStorage.getItem('noticias')) || [];
+            
+            // Encontrar la noticia
+            const index = noticias.findIndex(n => n.id === noticiaId);
+            
+            if (index !== -1) {
+                // Actualizar etiquetas
+                noticias[index].etiquetas = etiquetasSeleccionadas;
+                
+                // Guardar noticias
+                localStorage.setItem('noticias', JSON.stringify(noticias));
+                
+                // Mostrar mensaje
+                alert('Etiquetas actualizadas correctamente.');
+            }
+        }
+        
+        // Funciones para gestión de usuarios
+        function cargarUsuarios() {
+            // Obtener usuarios del localStorage
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            
+            // Mostrar usuarios
+            const usersData = document.getElementById('users-data');
+            usersData.innerHTML = '';
+            
+            if (usuarios.length === 0) {
+                usersData.innerHTML = '<tr><td colspan="5">No hay usuarios registrados.</td></tr>';
+                return;
+            }
+            
+            usuarios.forEach(usuario => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${usuario.username || 'N/A'}</td>
+                    <td>${usuario.email || 'N/A'}</td>
+                    <td>${usuario.fechaRegistro || 'N/A'}</td>
+                    <td>
+                        <select class="user-role" data-user-id="${usuario.id}">
+                            <option value="usuario" ${usuario.rol === 'usuario' ? 'selected' : ''}>Usuario</option>
+                            <option value="editor" ${usuario.rol === 'editor' ? 'selected' : ''}>Editor</option>
+                            <option value="admin" ${usuario.rol === 'admin' ? 'selected' : ''}>Administrador</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="button" class="delete-user" data-user-id="${usuario.id}">Eliminar</button>
+                    </td>
+                `;
+                usersData.appendChild(tr);
+            });
+            
+            // Añadir event listeners
+            document.querySelectorAll('.user-role').forEach(select => {
+                select.addEventListener('change', function() {
+                    const userId = this.getAttribute('data-user-id');
+                    const newRole = this.value;
+                    actualizarRolUsuario(userId, newRole);
+                });
+            });
+            
+            document.querySelectorAll('.delete-user').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const userId = this.getAttribute('data-user-id');
+                    eliminarUsuario(userId);
+                });
+            });
+        }
+        
+        function actualizarRolUsuario(userId, newRole) {
+            // Obtener usuarios
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            
+            // Encontrar el usuario
+            const index = usuarios.findIndex(u => u.id === userId);
+            
+            if (index !== -1) {
+                // Actualizar rol
+                usuarios[index].rol = newRole;
+                
+                // Guardar usuarios
+                localStorage.setItem('usuarios', JSON.stringify(usuarios));
+                
+                // Mostrar mensaje
+                alert('Rol actualizado correctamente.');
+            }
+        }
+        
+        function eliminarUsuario(userId) {
+            if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
+                // Obtener usuarios
+                const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+                
+                // Eliminar el usuario
+                const nuevosUsuarios = usuarios.filter(u => u.id !== userId);
+                
+                // Guardar usuarios
+                localStorage.setItem('usuarios', JSON.stringify(nuevosUsuarios));
+                
+                // Recargar usuarios
+                cargarUsuarios();
+            }
+        }
+        
+        // Funciones para estadísticas
+        function actualizarEstadisticas() {
+            // Obtener datos
+            const noticias = JSON.parse(localStorage.getItem('noticias')) || [];
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const comentarios = JSON.parse(localStorage.getItem('comentarios')) || [];
+            
+            // Visitas (simuladas)
+            const visitas = localStorage.getItem('totalVisitas') || 0;
+            
+            // Actualizar estadísticas
+            document.getElementById('total-visits').textContent = visitas;
+            document.getElementById('total-news').textContent = noticias.length;
+            document.getElementById('total-users').textContent = usuarios.length;
+            document.getElementById('total-comments').textContent = comentarios.length;
+            
+            // Actualizar gráfico (simulado)
+            // En una implementación real, estos datos vendrían de un análisis real de visitas
+        }
+        
+        // Inicializar datos de ejemplo si no existen
+        function inicializarDatosEjemplo() {
+            // Etiquetas de ejemplo
+            if (!localStorage.getItem('etiquetas')) {
+                const etiquetasEjemplo = ['Deportes', 'Cultura', 'Tecnología', 'Educación', 'Eventos'];
+                localStorage.setItem('etiquetas', JSON.stringify(etiquetasEjemplo));
+            }
+            
+            // Usuarios de ejemplo
+            if (!localStorage.getItem('usuarios')) {
+                const usuariosEjemplo = [
+                    {
+                        id: '1',
+                        username: 'admin',
+                        email: 'admin@ejemplo.com',
+                        fechaRegistro: '2023-01-01',
+                        rol: 'admin'
+                    },
+                    {
+                        id: '2',
+                        username: 'editor',
+                        email: 'editor@ejemplo.com',
+                        fechaRegistro: '2023-01-15',
+                        rol: 'editor'
+                    },
+                    {
+                        id: '3',
+                        username: 'usuario',
+                        email: 'usuario@ejemplo.com',
+                        fechaRegistro: '2023-02-01',
+                        rol: 'usuario'
+                    }
+                ];
+                localStorage.setItem('usuarios', JSON.stringify(usuariosEjemplo));
+            }
+            
+            // Visitas simuladas
+            if (!localStorage.getItem('totalVisitas')) {
+                localStorage.setItem('totalVisitas', '1250');
+            }
+            
+            // Comentarios de ejemplo
+            if (!localStorage.getItem('comentarios')) {
+                localStorage.setItem('comentarios', JSON.stringify([]));
+            }
+        }
+        
+        // Inicializar datos de ejemplo
+        inicializarDatosEjemplo();
+    </script>
+</body>
+</html>
