@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Contenido - Periódico Escolar</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../admin-styles.css">
+    <link rel="icon" href="../logo/isotipo yoan.png">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #3498db;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            background-color: #f0f0f0;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid #3498db;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        button.secondary {
+            background-color: #95a5a6;
+        }
+
+        button.secondary:hover {
+            background-color: #7f8c8d;
+        }
+
+        button.danger {
+            background-color: #e74c3c;
+        }
+
+        button.danger:hover {
+            background-color: #c0392b;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .preview-container {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 15px;
+            background-color: white;
+        }
+
+        .preview-container img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .tag-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .tag-item {
+            display: flex;
+            align-items: center;
+            background-color: #f0f0f0;
+            padding: 8px 12px;
+            border-radius: 20px;
+            margin-bottom: 5px;
+        }
+
+        .tag-item input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        .news-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .news-item {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .news-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .news-image {
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .news-item:hover .news-image img {
+            transform: scale(1.05);
+        }
+
+        .news-content {
+            padding: 15px;
+        }
+
+        .news-content h3 {
+            margin-top: 0;
+            font-size: 18px;
+            color: #2c3e50;
+        }
+
+        .news-meta {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .news-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .tag {
+            background-color: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tag-edit {
+            background-color: #f1c40f;
+        }
+
+        .tag-delete {
+            background-color: #e74c3c;
+        }
+
+        .tag button {
+            background: none;
+            border: none;
+            color: white;
+            padding: 0;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+
+        .modal-close:hover {
+            color: #e74c3c;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-grid .full-width {
+            grid-column: 1 / 3;
+        }
+
+        .related-news-preview {
+            margin-top: 20px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .related-news-preview h3 {
+            margin-top: 0;
+        }
+
+        .related-news-items {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .related-news-item {
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .related-news-item img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+
+        .related-news-item h4 {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-grid .full-width {
+                grid-column: 1;
+            }
+            
+            .related-news-items {
+                grid-template-columns: 1fr;
+            }
+            
+            .news-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Gestor de Contenido - Periódico Escolar</h1>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Volver al Periódico</a></li>
+                <li><a href="admin-panel.html">Panel de Administración</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div id="alert-container"></div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="noticias">Gestión de Noticias</div>
+            <div class="tab" data-tab="etiquetas">Gestión de Etiquetas</div>
+            <div class="tab" data-tab="modales">Edición de Modales</div>
+        </div>
+
+        <!-- Gestión de Noticias -->
+        <div id="noticias-tab" class="tab-content active">
+            <div class="card">
+                <h2>Crear/Editar Noticia</h2>
+                <form id="news-form" class="form-grid">
+                    <input type="hidden" id="news-id">
+                    
+                    <div>
+                        <label for="news-title">Título:</label>
+                        <input type="text" id="news-title" required>
+                    </div>
+                    
+                    <div>
+                        <label for="news-category">Categoría:</label>
+                        <select id="news-category" required>
+                            <option value="Destacado">Destacado</option>
+                            <option value="Noticias">Noticias</option>
+                            <option value="Deportes">Deportes</option>
+                            <option value="Cultura">Cultura</option>
+                            <option value="Tecnología">Tecnología</option>
+                            <option value="Eventos">Eventos</option>
+                            <option value="Opinión">Opinión</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="news-author">Autor:</label>
+                        <input type="text" id="news-author" required>
+                    </div>
+                    
+                    <div>
+                        <label for="news-date">Fecha:</label>
+                        <input type="date" id="news-date" required>
+                    </div>
+                    
+                    <div class="full-width">
+                        <label for="news-image">URL de Imagen:</label>
+                        <input type="text" id="news-image" placeholder="imagenes/ejemplo.jpg">
+                    </div>
+                    
+                    <div class="full-width">
+                        <label for="news-excerpt">Resumen (para vista previa):</label>
+                        <textarea id="news-excerpt" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="full-width">
+                        <label for="news-content">Contenido Completo:</label>
+                        <textarea id="news-content" rows="8" required></textarea>
+                    </div>
+                    
+                    <div class="full-width">
+                        <label>Etiquetas:</label>
+                        <div id="news-tags" class="tag-selector">
+                            <!-- Las etiquetas se cargarán dinámicamente aquí -->
+                        </div>
+                    </div>
+                    
+                    <div class="full-width">
+                        <h3>Vista Previa</h3>
+                        <div class="preview-container">
+                            <div id="news-preview"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="full-width">
+                        <div class="button-group">
+                            <button type="submit" id="save-news">Guardar Noticia</button>
+                            <button type="button" id="clear-news-form" class="secondary">Limpiar Formulario</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h2>Noticias Existentes</h2>
+                <div id="news-list" class="news-list">
+                    <!-- Las noticias se cargarán dinámicamente aquí -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Gestión de Etiquetas -->
+        <div id="etiquetas-tab" class="tab-content">
+            <div class="card">
+                <h2>Crear Nueva Etiqueta</h2>
+                <form id="tag-form">
+                    <div class="form-group">
+                        <label for="tag-name">Nombre de la Etiqueta:</label>
+                        <input type="text" id="tag-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tag-description">Descripción (opcional):</label>
+                        <textarea id="tag-description"></textarea>
+                    </div>
+                    <button type="submit">Crear Etiqueta</button>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h2>Etiquetas Existentes</h2>
+                <div id="tag-list" class="tag-list">
+                    <!-- Las etiquetas se cargarán dinámicamente aquí -->
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Asignar Etiquetas a Noticias</h2>
+                <div class="form-group">
+                    <label for="tag-news-selector">Seleccionar Noticia:</label>
+                    <select id="tag-news-selector">
+                        <option value="">Selecciona una noticia...</option>
+                        <!-- Las noticias se cargarán dinámicamente aquí -->
+                    </select>
+                </div>
+                <div id="tag-assignment-container" style="display: none;">
+                    <h3>Etiquetas para: <span id="selected-news-title"></span></h3>
+                    <div id="news-tag-list" class="tag-selector">
+                        <!-- Las etiquetas se cargarán dinámicamente aquí -->
+                    </div>
+                    <div class="button-group">
+                        <button id="save-news-tags">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edición de Modales -->
+        <div id="modales-tab" class="tab-content">
+            <div class="card">
+                <h2>Editar Contenido de Modales</h2>
+                <p>Selecciona una noticia para editar su contenido en el modal:</p>
+                <div class="form-group">
+                    <label for="modal-news-selector">Seleccionar Noticia:</label>
+                    <select id="modal-news-selector">
+                        <option value="">Selecciona una noticia...</option>
+                        <!-- Las noticias se cargarán dinámicamente aquí -->
+                    </select>
+                </div>
+                
+                <div id="modal-editor" style="display: none;">
+                    <form id="modal-form" class="form-grid">
+                        <div class="full-width">
+                            <h3>Editar Modal para: <span id="modal-news-title"></span></h3>
+                        </div>
+                        
+                        <div>
+                            <label for="modal-author">Autor:</label>
+                            <input type="text" id="modal-author">
+                        </div>
+                        
+                        <div>
+                            <label for="modal-date">Fecha:</label>
+                            <input type="text" id="modal-date">
+                        </div>
+                        
+                        <div class="full-width">
+                            <label for="modal-image">URL de Imagen:</label>
+                            <input type="text" id="modal-image">
+                        </div>
+                        
+                        <div class="full-width">
+                            <label for="modal-content">Contenido del Modal:</label>
+                            <textarea id="modal-content" rows="10"></textarea>
+                        </div>
+                        
+                        <div class="full-width">
+                            <label>Etiquetas del Modal:</label>
+                            <div id="modal-tags" class="tag-selector">
+                                <!-- Las etiquetas se cargarán dinámicamente aquí -->
+                            </div>
+                        </div>
+                        
+                        <div class="full-width">
+                            <h3>Noticias Relacionadas</h3>
+                            <p>Estas son las noticias que aparecerán como relacionadas en el modal:</p>
+                            <div id="related-news-preview" class="related-news-preview">
+                                <div class="related-news-items">
+                                    <!-- Las noticias relacionadas se mostrarán aquí -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="full-width">
+                            <div class="button-group">
+                                <button type="submit">Guardar Cambios</button>
+                                <button type="button" id="preview-modal" class="secondary">Vista Previa</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Vista Previa -->
+    <div id="preview-modal-container" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div id="preview-modal-content"></div>
+        </div>
+    </div>
+
+    <!-- Modal de Edición de Etiqueta -->
+    <div id="edit-tag-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h2>Editar Etiqueta</h2>
+            <form id="edit-tag-form">
+                <input type="hidden" id="edit-tag-id">
+                <div class="form-group">
+                    <label for="edit-tag-name">Nombre:</label>
+                    <input type="text" id="edit-tag-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-tag-description">Descripción:</label>
+                    <textarea id="edit-tag-description"></textarea>
+                </div>
+                <button type="submit">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Periódico Escolar. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestión de pestañas
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Desactivar todas las pestañas
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Activar la pestaña seleccionada
+                    tab.classList.add('active');
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
+            
+            // Inicializar datos si no existen
+            initializeData();
+            
+            // Cargar datos
+            loadNews();
+            loadTags();
+            updateNewsSelectors();
+            
+            // Event listeners para formularios
+            document.getElementById('news-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveNews();
+            });
+            
+            document.getElementById('tag-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                createTag();
+            });
+            
+            document.getElementById('edit-tag-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveTagEdit();
+            });
+            
+            document.getElementById('modal-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveModalContent();
+            });
+            
+            // Otros event listeners
+            document.getElementById('clear-news-form').addEventListener('click', clearNewsForm);
+            
+            document.getElementById('tag-news-selector').addEventListener('change', function() {
+                const newsId = this.value;
+                if (newsId) {
+                    loadNewsTagAssignments(newsId);
+                } else {
+                    document.getElementById('tag-assignment-container').style.display = 'none';
+                }
+            });
+            
+            document.getElementById('modal-news-selector').addEventListener('change', function() {
+                const newsId = this.value;
+                if (newsId) {
+                    loadModalContent(newsId);
+                } else {
+                    document.getElementById('modal-editor').style.display = 'none';
+                }
+            });
+            
+            document.getElementById('save-news-tags').addEventListener('click', saveNewsTagAssignments);
+            
+            document.getElementById('preview-modal').addEventListener('click', previewModal);
+            
+            // Cerrar modales
+            document.querySelectorAll('.modal-close').forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    this.closest('.modal').classList.remove('active');
+                });
+            });
+            
+            // Vista previa en tiempo real
+            document.getElementById('news-title').addEventListener('input', updateNewsPreview);
+            document.getElementById('news-excerpt').addEventListener('input', updateNewsPreview);
+            document.getElementById('news-image').addEventListener('input', updateNewsPreview);
+            document.getElementById('news-author').addEventListener('input', updateNewsPreview);
+            document.getElementById('news-date').addEventListener('input', updateNewsPreview);
+        });
+        
+        // Funciones de inicialización
+        function initializeData() {
+            // Inicializar etiquetas si no existen
+            if (!localStorage.getItem('news_tags')) {
+                const defaultTags = [
+                    {
+                        id: "1",
+                        name: "Noticias",
+                        description: "Noticias generales del centro",
+                        newsIds: []
+                    },
+                    {
+                        id: "2",
+                        name: "Deportes",
+                        description: "Eventos y noticias deportivas",
+                        newsIds: []
+                    },
+                    {
+                        id: "3",
+                        name: "Cultura",
+                        description: "Actividades culturales y artísticas",
+                        newsIds: []
+                    },
+                    {
+                        id: "4",
+                        name: "Eventos",
+                        description: "Próximos eventos y actividades",
+                        newsIds: []
+                    },
+                    {
+                        id: "5",
+                        name: "Tecnología",
+                        description: "Noticias relacionadas con tecnología",
+                        newsIds: []
+                    }
+                ];
+                
+                localStorage.setItem('news_tags', JSON.stringify(defaultTags));
+            }
+            
+            // Inicializar noticias si no existen
+            if (!localStorage.getItem('news_items')) {
+                localStorage.setItem('news_items', JSON.stringify([]));
+            }
+        }
+        
+        // Funciones para gestión de noticias
+        function loadNews() {
+            const newsList = document.getElementById('news-list');
+            newsList.innerHTML = '';
+            
+            const news = JSON.parse(localStorage.getItem('news_items') || '[]');
+            
+            if (news.length === 0) {
+                newsList.innerHTML = '<p>No hay noticias disponibles. Crea tu primera noticia usando el formulario.</p>';
+                return;
+            }
+            
+            news.forEach(item => {
+                const newsItem = document.createElement('div');
+                newsItem.className = 'news-item';
+                
+                const formattedDate = formatDate(item.date);
+                
+                newsItem.innerHTML = `
+                    <div class="news-image">
+                        <img src="${item.image || '/placeholder.svg?height=180&width=300'}" alt="${item.title}">
+                    </div>
+                    <div class="news-content">
+                        <h3>${item.title}</h3>
+                        <div class="news-meta">
+                            <span>${item.author}</span> • 
+                            <span>${formattedDate}</span> • 
+                            <span>${item.category}</span>
+                        </div>
+                        <p>${truncateText(item.excerpt, 100)}</p>
+                        <div class="news-actions">
+                            <button class="edit-news" data-id="${item.id}">Editar</button>
+                            <button class="delete-news danger" data-id="${item.id}">Eliminar</button>
+                        </div>
+                    </div>
+                `;
+                
+                newsList.appendChild(newsItem);
+            });
+            
+            // Añadir event listeners
+            document.querySelectorAll('.edit-news').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const newsId = this.getAttribute('data-id');
+                    editNews(newsId);
+                });
+            });
+            
+            document.querySelectorAll('.delete-news').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const newsId = this.getAttribute('data-id');
+                    deleteNews(newsId);
+                });
+            });
+        }
+        
+        function saveNews() {
+            const newsId = document.getElementById('news-id').value;
+            const title = document.getElementById('news-title').value;
+            const category = document.getElementById('news-category').value;
+            const author = document.getElementById('news-author').value;
+            const date = document.getElementById('news-date').value;
+            const image = document.getElementById('news-image').value;
+            const excerpt = document.getElementById('news-excerpt').value;
+            const content = document.getElementById('news-content').value;
+            
+            // Obtener etiquetas seleccionadas
+            const selectedTags = [];
+            document.querySelectorAll('#news-tags input[type="checkbox"]:checked').forEach(checkbox => {
+                selectedTags.push(checkbox.value);
+            });
+            
+            // Obtener noticias existentes
+            const news = JSON.parse(localStorage.getItem('news_items') || '[]');
+            
+            if (newsId) {
+                // Actualizar noticia existente
+                const index = news.findIndex(item => item.id === newsId);
+                if (index !== -1) {
+                    news[index] = {
+                        ...news[index],
+                        title,
+                        category,
+                        author,
+                        date,
+                        image,
+                        excerpt,
+                        content,
+                        tags: selectedTags
+                    };
+                }
+            } else {
+                // Crear nueva noticia
+                const newNews = {
+                    id: Date.now().toString(),
+                    title,
+                    category,
+                    author,
+                    date,
+                    image,
+                    excerpt,
+                    content,
+                    tags: selectedTags
+                };
+                
+                news.push(newNews);
+            }
+            
+            // Guardar noticias
+            localStorage.setItem('news_items', JSON.stringify(news));
+            
+            // Actualizar etiquetas
+            updateTagsWithNews(news);
+            
+            // Limpiar formulario
+            clearNewsForm();
+            
+            // Recargar noticias
+            loadNews();
+            updateNewsSelectors();
+            
+            // Mostrar mensaje
+            showAlert(newsId ? 'Noticia actualizada correctamente.' : 'Noticia creada correctamente.', 'success');
+        }
+        
+        function editNews(newsId) {
+            const news = JSON.parse(localStorage.getItem('news_items') || '[]');
+            const newsItem = news.find(item => item.id === newsId);
+            
+            if (!newsItem) return;
+            
+            // Llenar formulario
+            document.getElementById('news-id').value = newsItem.id;
+            document.getElementById('news-title').value = newsItem.title;
+            document.getElementById('news-category').value = newsItem.category || 'Destacado';
+            document.getElementById('news-author').value = newsItem.author;
+            document.getElementById('news-date').value = newsItem.date;
+            document.getElementById('news-image').value = newsItem.image || '';
+            document.getElementById('news-excerpt').value = newsItem.excerpt;
+            document.getElementById('news-content').value = newsItem.content;
+            
+            // Marcar etiquetas
+            document.querySelectorAll('#news-tags input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = newsItem.tags && newsItem.tags.includes(checkbox.value);
+            });
+            
+            // Actualizar vista previa
+            updateNewsPreview();
+            
+            // Desplazarse al formulario
+            document.getElementById('news-form').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function deleteNews(newsId) {
+            if (!confirm('¿Estás seguro de que deseas eliminar esta noticia? Esta acción no se puede deshacer.')) {
+                return;
+            }
+            
+            const news = JSON.parse(localStorage.getItem('news_items') || '[]');
+            const updatedNews = news.filter(item => item.id !== newsId);
+            
+            localStorage.setItem('news_items', JSON.stringify(updatedNews));
+            
+            // Actualizar etiquetas
+            updateTagsWithNews(updatedNews);
+            
+            loadNews();
+            updateNewsSelectors();
+            
+            showAlert('Noticia eliminada correctamente.', 'success');
+        }
+        
+        function clearNewsForm() {
+            document.getElementById('news-form').reset();
+            document.getElementById('news-id').value = '';
+            document.getElementById('news-preview').innerHTML = '';
+            
+            // Desmarcar todas las etiquetas
+            document.querySelectorAll('#news-tags input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        }
+        
+        function updateNewsPreview() {
+            const title = document.getElementById('news-title').value;
+            const excerpt = document.getElementById('news-excerpt').value;
+            const image = document.getElementById('news-image').value;
+            const author = document.getElementById('news-author').value;
+            const date = document.getElementById('news-date').value;
+            
+            const previewContainer = document.getElementById('news-preview');
+            
+            if (!title && !excerpt) {
+                previewContainer.innerHTML = '<p>Completa el formulario para ver la vista previa.</p>';
+                return;
+            }
+            
+            const formattedDate = formatDate(date);
+            
+            previewContainer.innerHTML = `
+                <div class="news-preview">
+                    <h3>${title || 'Título de la noticia'}</h3>
+                    ${image ? `<img src="${image}" alt="${title}" style="max-width: 100%; height: auto; margin-bottom: 10px;">` : ''}
+                    <div style="color: #666; margin-bottom: 10px;">
+                        <span>${author || 'Autor'}</span> • 
+                        <span>${formattedDate || 'Fecha'}</span>
+                    </div>
+                    <p>${excerpt || 'Resumen de la noticia...'}</p>
+                </div>
+            `;
+        }
+        
+        // Funciones para gestión de etiquetas
+        function loadTags() {
+            const tags = JSON.parse(localStorage.getItem('news_tags') || '[]');
+            
+            // Actualizar lista de etiquetas
+            const tagList = document.getElementById('tag-list');
+            tagList.innerHTML = '';
+            
+            if (tags.length === 0) {
+                tagList.innerHTML = '<p>No hay etiquetas disponibles. Crea tu primera etiqueta usando el formulario.</p>';
+            } else {
+                tags.forEach(tag => {
+                    const tagElement = document.createElement('div');
+                    tagElement.className = 'tag';
+                    tagElement.innerHTML = `
+                        ${tag.name} 
+                        <button class="edit-tag" data-id="${tag.id}">✏️</button>
+                        <button class="delete-tag" data-id="${tag.id}">🗑️</button>
+                    `;
+                    tagList.appendChild(tagElement);
+                });
+                
+                // Añadir event listeners
+                document.querySelectorAll('.edit-tag').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const tagId = this.getAttribute('data-id');
+                        editTag(tagId);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-tag').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const tagId = this.getAttribute('data-id');
+                        deleteTag(tagId);
+                    });
+                });
+            }
+            
+            // Actualizar checkboxes en formulario de noticias
+            updateNewsTagCheckboxes();
+            
+            // Actualizar checkboxes en formulario de modales
+            updateModalTagCheckboxes();
+        }
+        
+        function createTag() {
+            const tagName = document.getElementById('tag-name').value.trim();
+            const tagDescription = document.getElementById('tag-description').value.trim();
+            
+            if (!tagName) {
+                showAlert('Por favor, introduce un nombre para la etiqueta.', 'error');
+                return;
+            }
+            
+            const tags = JSON.parse(localStorage.getItem('news_tags') || '[]');
+            
+            // Verificar si ya existe una etiqueta con ese nombre
+            if (tags.some(tag => tag.name.toLowerCase() === tagName.toLowerCase())) {
+                showAlert('Ya existe una etiqueta con ese nombre.', 'error');
+                return;
+            }
+            
+            // Crear nueva etiqueta
+            const newTag = {
+                id: Date.now().toString(),
+                name: tagName,
+                description: tagDescription,
+                newsIds: []
+            };
+            
+            tags.push(newTag);
+            localStorage.setItem('news_tags', JSON.stringify(tags));
+            
+            // Limpiar formulario
+            document.getElementById('tag-form').reset();
+            
+            // Recargar etiquetas
+            loadTags();
+            
+            showAlert('Etiqueta creada correctamente.', 'success');
+        }
+        
+        function editTag(tagId) {
+            const tags = JSON.parse(localStorage.getItem('news_tags') || '[]');
+            const tag = tags.find(t => t.id === tagId);
+            
+            if (!tag) return;
+            
+            // Llenar formulario de edición
+            document.getElementById('edit-tag-id').value = tag.id;
+            document.getElementById('edit-tag-name').value = tag.name;
+            document.getElementById('edit-tag-description').value = tag.description || '';
+            
+            // Mostrar modal
+            document.getElementById('edit-tag-modal').classList.add('active');
+        }
+        
+        function saveTagEdit() {
+            const tagId = document.getElementById('edit-tag-id').value;
+            const tagName = document.getElementById('edit-tag-name').value.trim();
+            const tagDescription = document.getElementById('edit-tag-description').value.trim();
+            
+            if (!tagName) {
+                showAlert('Por favor, introduce un nombre para la etiqueta.', 'error');
+                return;
+            }
+            
+            const tags = JSON.parse(localStorage.getItem('news_tags') || '[]');
+            
+            // Verificar si ya existe otra etiqueta con ese nombre
+            if (tags.some(tag => tag.id !== tagId && tag.name.toLowerCase() === tagName.toLowerCase())) {
+                showAlert('Ya existe otra etiqueta con ese nombre.', 'error');
+                return;
+            }
+            
+            // Actualizar etiqueta
+            const index = tags.findIndex(tag => tag.id === tagId);
+            if (index !== -1) {
+                tags[index] = {
+                    ...tags[index],
+                    name: tagName,
+                    description: tagDescription
+                };
+                
+                localStorage.setItem('news_tags', JSON.stringify(tags));
+                
+                // Cerrar modal
+                document.getElementById('edit-tag-modal').classList.remove('active');
+                
+                // Recargar etiquetas
+                loadTags();
+                
+                showAlert('Etiqueta actualizada correctamente.', 'success');
+            }
+        }
+        
+        function deleteTag(tagId) {
+            if (!confirm('¿Estás seguro de que deseas eliminar esta etiqueta? Se eliminará de todas las noticias asociadas.')) {
+                return;
+            }
+            
+            const tags = JSON.parse(localStorage.getItem('news_tags') || '[]');
+            const updatedTags = tags.filter(tag => tag.id !== tagId);
+            
+            localStorage.setItem('news_tags', JSON.stringify(updatedTags));
+            
+            // Eliminar la etiqueta de todas las noticias
+            const news = JSON.parse(localStorage.getItem('news_items') || '[]');
+            const updatedNews = news.map(item => {
+                if (item.tags && item.tags.includes(tagId)) {
+                    return {
+                        ...item,
+                        tags: item.tags.filter(t => t !== tagId)
+                    };
+                }
+                return item;
+            });
+            
+            localStorage.setItem('news_items', JSON.stringify(updatedNews));
+            
+            // Recargar etiquetas
+            loadTags();
+            
+            showAlert('Etiqueta eliminada correctamente.', 'success');
+        }
+        
+        function updateNewsTagCheckboxes() {
+            const tags = JSON.parse(localStorage.getItem('news_tags') || '[]');
+            const newsTagsContainer = document.getElementById('news-tags');
+            
+            newsTagsContainer.innerHTML = '';
+            
+            if (tags.length === 0) {
+                newsTagsContainer.innerHTML = '<p>No hay etiquetas disponibles. Crea etiquetas primero.</p>';
+                return;
+            }
+            
+            tags.forEach(tag => {
+                const tagItem = document.createElement('label');
+                tagItem.className = 'tag-item';
+                tagItem.innerHTML = `
+                    <input type="checkbox" value="${tag.id}"> ${tag.name}
+                `;
+                newsTagsContainer.appendChild(tagItem);
+            });
+        }
+        
+        function updateModalTagCheckboxes() {
+            const tags = JSON.parse(localStorage.getItem('news_tags') || '[]');
+            const modalTagsContainer = document.getElementById('modal-tags');
+            
+            if (!modalTagsContainer) return;
+            
+            modalTagsContainer.innerHTML = '';
+            
+            if (tags.length === 0) {
+                modalTagsContainer.innerHTML = '<p>No hay etiquetas disponibles.</p>';
+                return;
+            }
+            
+            tags.forEach(tag => {
+                const tagItem = document.createElement('label');
+                tagItem.className = 'tag-item';
+                tagItem.innerHTML = `
+                    <input type="checkbox" value="${tag.id}"> ${tag.name}
+                `;
+                modalTagsContainer.appendChild(tagItem);
+            });
+        }
+        
+        function loadNewsTagAssignments(newsId) {
+            const news = JSON.parse(localStorage.getItem('news_items') || '[]');
+            const tags = JSON.parse(localStorage.getItem('news_tags') || '[]');
+            
+            const newsItem = news.find(item => item.id === newsId);
+            
+            if (!newsItem) return;
+            
+            // Mostrar título de la noticia
+            document.getElementById('selected-news-title').textContent = newsItem.title;
+            
+            // Mostrar checkboxes de etiquetas
+            const newsTagList = document.getElementById('news-tag-list');
+            newsTagList.innerHTML = '';
+            
+            tags.forEach(tag => {
+                const isChecked = newsItem.tags && newsItem.tags.includes(tag.id);
+                
+                const tagItem = document.createElement('label');
+                tagItem.className = 'tag-item';
+                tagItem.innerHTML = `
+                    <input type="checkbox" value="${tag.id}" ${isChecked ? 'checked' : ''}> ${tag.name}
+                `;
+                newsTagList.appendChild(tagItem);
+            });
+            
+            // Mostrar contenedor
+            document.getElementById('tag-assignment-container').style.display = 'block';
+        }
+        
+        function saveNewsTagAssignments() {
+            const newsId = document.getElementById('tag-news-selector').value;
+            
+            if (!newsId) return;
+            
+            // Obtener etiquetas seleccionadas
+            const selectedTags = [];
+            document.querySelectorAll('#news-tag-list input[type="checkbox"]:checked').forEach(checkbox => {
+                selectedTags.push(checkbox.value);
+            });
+            
+            // Actualizar noticia
+            const news = JSON.parse(localStorage.getItem('news_items') || '[]');
+            const index = news.findIndex(item => item.id === newsId);
+            
+            if (index !== -1) {
+                news[index] = {
+                    ...news[index],
+                    tags: selectedTags
+                };
+                
+                localStorage.setItem('news_items', JSON.stringify(news));
+                
+                // Actualizar etiquetas
+                updateTagsWithNews(news);
+                
+                showAlert('Etiquetas asignadas correctamente.', 'success');
+            }
+        }
+        
+        function updateTagsWithNews(news) {
+            const tags = JSON.parse(localStorage.getItem('news_tags') || '[]');
+            
+            // Reiniciar newsIds en todas las etiquetas
+            tags.forEach(tag => {
+                tag.newsIds = [];
+            });
+            
+            // Asignar noticias a etiquetas
+            news.forEach(item => {
+                if (item.tags && item.tags.length > 0) {
+                    item.tags.forEach(tagId => {
+                        const tagIndex = tags.findIndex(tag => tag.id === tagId);
+                        if (tagIndex !== -1) {
+                            if (!tags[tagIndex].newsIds) {
+                                tags[tagIndex].newsIds = [];
+                            }
+                            tags[tagIndex].newsIds.push(item.id);
+                        }
+                    });
+                }
+            });
+            
+            localStorage.setItem('news_tags', JSON.stringify(tags));
+        }
+        
+        // Funciones para edición de modales
+        function loadModalContent(newsId) {
+            const news = JSON.parse(localStorage.getItem('news_items') || '[]');
+            const newsItem = news.find(item => item.id === newsId);
+            
+            if (!newsItem) return;
+            
+            // Mostrar título de la noticia
+            document.getElementById('modal-news-title').textContent = newsItem.title;
+            
+            // Llenar formulario
+            document.getElementById('modal-author').value = newsItem.author;
+            document.getElementById('modal-date').value = formatDate(newsItem.date);
+            document.getElementById('modal-image').value = newsItem.image || '';
+            document.getElementById('modal-content').value = newsItem.content;
+            
+            // Marcar etiquetas
+            document.querySelectorAll('#modal-tags input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = newsItem.tags && newsItem.tags.includes(checkbox.value);
+            });
+            
+            // Mostrar noticias relacionadas
+            updateRelatedNewsPreview(newsItem);
+            
+            // Mostrar editor
+            document.getElementById('modal-editor').style.display = 'block';
+        }
+        
+        function updateRelatedNewsPreview(newsItem) {
+            const relatedNewsContainer = document.getElementById('related-news-preview');
+            const relatedNewsItems = relatedNewsContainer.querySelector('.related-news-items');
+            
+            relatedNewsItems.innerHTML = '';
+            
+            // Obtener noticias relacionadas
+            const relatedNews = getRelatedNews(newsItem.id, newsItem.tags);
+            
+            if (relatedNews.length === 0) {
+                relatedNewsItems.innerHTML = '<p>No hay noticias relacionadas disponibles.</p>';
+                return;
+            }
+            
+            relatedNews.forEach(news => {
+                const newsElement = document.createElement('div');
+                newsElement.className = 'related-news-item';
+                newsElement.innerHTML = `
+                    <img src="${news.image || '/placeholder.svg?height=80&width=120'}" alt="${news.title}">
+                    <h4>${news.title}</h4>
+                `;
+                relatedNewsItems.appendChild(newsElement);
+            });
+        }
+        
+        function getRelatedNews(currentNewsId, currentTags) {
+            if (!currentTags || currentTags.length === 0) return [];
+            
+            const news = JSON.parse(localStorage.getItem('news_items') || '[]');
+            
+            // Filtrar noticias relacionadas
+            const relatedNews = news.filter(item => {
+                // No incluir la noticia actual
+                if (item.id === currentNewsId) return false;
+                
+                // Verificar si comparte etiquetas
+                return item.tags && currentTags.some(tag => item.tags.includes(tag));
+            });
+            
+            // Limitar a 3 noticias
+            return relatedNews.slice(0, 3);
+        }
+        
+        function saveModalContent() {
+            const newsId = document.getElementById('modal-news-selector').value;
+            
+            if (!newsId) return;
+            
+            const author = document.getElementById('modal-author').value;
+            const date = document.getElementById('modal-date').value;
+            const image = document.getElementById('modal-image').value;
+            const content = document.getElementById('modal-content').value;
+            
+            // Obtener etiquetas seleccionadas
+            const selectedTags = [];
+            document.querySelectorAll('#modal-tags input[type="checkbox"]:checked').forEach(checkbox => {
+                selectedTags.push(checkbox.value);
+            });
+            
+            // Actualizar noticia
+            const news = JSON.parse(localStorage.getItem('news_items') || '[]');
+            const index = news.findIndex(item => item.id === newsId);
+            
+            if (index !== -1) {
+                news[index] = {
+                    ...news[index],
+                    author,
+                    date: convertToISODate(date),
+                    image,
+                    content,
+                    tags: selectedTags
+                };
+                
+                localStorage.setItem('news_items', JSON.stringify(news));
+                
+                // Actualizar etiquetas
+                updateTagsWithNews(news);
+                
+                // Actualizar vista previa de noticias relacionadas
+                updateRelatedNewsPreview(news[index]);
+                
+                showAlert('Contenido del modal actualizado correctamente.', 'success');
+            }
+        }
+        
+        function previewModal() {
+            const newsId = document.getElementById('modal-news-selector').value;
+            
+            if (!newsId) return;
+            
+            const news = JSON.parse(localStorage.getItem('news_items') || '[]');
+            const newsItem = news.find(item => item.id === newsId);
+            
+            if (!newsItem) return;
+            
+            // Obtener noticias relacionadas
+            const relatedNews = getRelatedNews(newsItem.id, newsItem.tags);
+            
+            // Crear contenido del modal
+            const modalContent = document.getElementById('preview-modal-content');
+            
+            modalContent.innerHTML = `
+                <div class="news-modal-preview">
+                    <h2>${newsItem.title}</h2>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <img src="${newsItem.image || '/placeholder.svg?height=300&width=600'}" alt="${newsItem.title}" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    </div>
+                    
+                    <div style="color: #666; margin-bottom: 20px;">
+                        <span>${newsItem.author}</span> • 
+                        <span>${formatDate(newsItem.date)}</span> • 
+                        <span>${newsItem.category}</span>
+                    </div>
+                    
+                    <div style="line-height: 1.6;">
+                        ${newsItem.content.split('\n').map(paragraph => `<p>${paragraph}</p>`).join('')}
+                    </div>
+                    
+                    <div style="margin-top: 30px;">
+                        <h3>Noticias relacionadas</h3>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px;">
+                            ${relatedNews.map(news => `
+                                <div style="background-color: #f5f5f5; border-radius: 8px; overflow: hidden;">
+                                    <img src="${news.image || '/placeholder.svg?height=120&width=200'}" alt="${news.title}" style="width: 100%; height: 120px; object-fit: cover;">
+                                    <div style="padding: 10px;">
+                                        <h4 style="margin: 0; font-size: 16px;">${news.title}</h4>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Mostrar modal
+            document.getElementById('preview-modal-container').classList.add('active');
+        }
+        
+        // Funciones de utilidad
+        function updateNewsSelectors() {
+            const news = JSON.parse(localStorage.getItem('news_items') || '[]');
+            
+            // Actualizar selector de noticias para etiquetas
+            const tagNewsSelector = document.getElementById('tag-news-selector');
+            tagNewsSelector.innerHTML = '<option value="">Selecciona una noticia...</option>';
+            
+            // Actualizar selector de noticias para modales
+            const modalNewsSelector = document.getElementById('modal-news-selector');
+            modalNewsSelector.innerHTML = '<option value="">Selecciona una noticia...</option>';
+            
+            news.forEach(item => {
+                const option1 = document.createElement('option');
+                option1.value = item.id;
+                option1.textContent = item.title;
+                tagNewsSelector.appendChild(option1);
+                
+                const option2 = document.createElement('option');
+                option2.value = item.id;
+                option2.textContent = item.title;
+                modalNewsSelector.appendChild(option2);
+            });
+        }
+        
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alert-container');
+            
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            
+            alertContainer.appendChild(alert);
+            
+            // Eliminar alerta después de 3 segundos
+            setTimeout(() => {
+                alert.remove();
+            }, 3000);
+        }
+        
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            
+            try {
+                const date = new Date(dateString);
+                
+                // Verificar si la fecha es válida
+                if (isNaN(date.getTime())) return dateString;
+                
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                return date.toLocaleDateString('es-ES', options);
+            } catch (e) {
+                return dateString;
+            }
+        }
+        
+        function convertToISODate(dateString) {
+            if (!dateString) return '';
+            
+            try {
+                // Si ya es una fecha ISO, devolverla
+                if (/^\d{4}-\d{2}-\d{2}/.test(dateString)) {
+                    return dateString;
+                }
+                
+                // Intentar convertir fecha en formato español a ISO
+                const parts = dateString.split(' de ');
+                if (parts.length === 3) {
+                    const day = parseInt(parts[0]);
+                    const month = getMonthNumber(parts[1]);
+                    const year = parseInt(parts[2]);
+                    
+                    if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+                        return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                    }
+                }
+                
+                // Si no se puede convertir, devolver la fecha actual
+                const now = new Date();
+                return now.toISOString().split('T')[0];
+            } catch (e) {
+                // En caso de error, devolver la fecha actual
+                const now = new Date();
+                return now.toISOString().split('T')[0];
+            }
+        }
+        
+        function getMonthNumber(monthName) {
+            const months = {
+                'enero': 1,
+                'febrero': 2,
+                'marzo': 3,
+                'abril': 4,
+                'mayo': 5,
+                'junio': 6,
+                'julio': 7,
+                'agosto': 8,
+                'septiembre': 9,
+                'octubre': 10,
+                'noviembre': 11,
+                'diciembre': 12
+            };
+            
+            return months[monthName.toLowerCase()] || 1;
+        }
+        
+        function truncateText(text, maxLength) {
+            if (!text) return '';
+            if (text.length <= maxLength) return text;
+            
+            return text.substring(0, maxLength) + '...';
+        }
+    </script>
+</body>
+</html>
