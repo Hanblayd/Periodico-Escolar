@@ -673,7 +673,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const addReadMoreButtons = () => {
       // Seleccionar todos los tipos de noticias en la página
       const newsItems = document.querySelectorAll(
-        ".noticia-card, .article-preview, .noticia, .evento, .evento2, .evento5, .small-article, .featured-news",
+        ".noticia-card, .article-preview, .noticia, .evento, .evento2, .small-article, .featured-news",
       )
 
       newsItems.forEach((item, index) => {
