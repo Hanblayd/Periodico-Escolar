@@ -299,23 +299,27 @@ document.addEventListener("DOMContentLoaded", () => {
     // Array de imágenes para la galería
     const galleryImages = [
       {
+        src: "imagenes deportes/todos los cursos.jpg",
+        alt: "Foto en blanco todos",
+      },
+      {
         src: "imagenes deportes/foto en blanco todos.jpg",
         alt: "Foto en blanco todos",
       },
       {
-        src: "imagenes/varones de lado.jpg",
+        src: "imagenes deportes/todos los enfermeros.jpg",
         alt: "Celebración navideña",
       },
       {
-        src: "imagenes/varones de frente.jpg",
+        src: "imagenes deportes/todos los generales.jpg",
         alt: "Celebración navideña",
       },
       {
-        src: "imagenes/mujeres de frente.jpg",
+        src: "imagenes deportes/todos los contables.jpg",
         alt: "Celebración navideña",
       },
       {
-        src: "imagenes/mujeres beso.jpg",
+        src: "imagenes deportes/flor.jpg",
         alt: "Celebración navideña",
       },
       {
@@ -323,11 +327,11 @@ document.addEventListener("DOMContentLoaded", () => {
         alt: "Celebración navideña",
       },
       {
-        src: "imagenes/nosotros cualto.jpg",
+        src: "imagenes deportes/mujeres contabilidad.jpg",
         alt: "Celebración navideña",
       },
       {
-        src: "imagenes/asli y suero.jpg",
+        src: "imagenes deportes/chica sola.jpg",
         alt: "Celebración navideña",
       },
       {
@@ -335,7 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
         alt: "Celebración navideña",
       },
       {
-        src: "imagenes/la 3.jpg",
+        src: "imagenes deportes/carola.jpg",
         alt: "Celebración navideña",
       },
     ]
