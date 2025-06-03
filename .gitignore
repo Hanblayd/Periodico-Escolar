@@ -25,3 +25,21 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+# Archivos a ignorar
+tsconfig.json
+tailwind.config.ts
+postcss.config.mjs
+pnpm-lock.yaml
+package.json
+next.config.mjs
+news-detail.tsx
+components.json
+
+# Carpetas a ignorar
+public/
+lib/
+hooks/
+components/
+app/
